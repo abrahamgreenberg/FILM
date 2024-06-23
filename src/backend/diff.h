@@ -4,6 +4,7 @@
 #include "folders.h"
 #include "../opts.h"
 #include <stdbool.h>
+#include <string.h>
 
 struct Diff
 {
@@ -18,6 +19,6 @@ typedef struct Diff Diff;
 
 void DiffArrayConstructor(Diff **diffs, Folder *folders, size_t folders_size);
 void SwapDiffs(Diff *diffs, int i, int j);
-void FormatDiffName(char *str, int number, const char *name);
+void UpdateDiffName(Diff **diffs, int *index, int number, const char *name);
 
 #endif

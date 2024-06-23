@@ -18,17 +18,17 @@ void draw_ui(
     if (!edit)
     {
         mvprintw(j++, 0, "[Navigation mode]");
-        mvprintw(j++, 0, "[Q]: Quit. [E]: Enter edit mode. [Up Arrow]: Go up. [Down Arrow]: Go down. [Enter]: Navigate.");
+        // mvprintw(j++, 0, "[Q]: Quit. [E]: Enter edit mode. [Up Arrow]: Go up. [Down Arrow]: Go down. [Enter]: Navigate.");
     }
     else if (edit && !write)
     {
         mvprintw(j++, 0, "[Edit mode]");
-        mvprintw(j++, 0, "[Q]: Navigation mode. [U]: Move up. [D]: Move down. [R]: Rename. [W]: Write changes. [Up Arrow]: Go Up. [Down Arrow]: Go down.");
+        // mvprintw(j++, 0, "[Q]: Navigation mode. [U]: Move up. [D]: Move down. [R]: Rename. [W]: Write changes. [Up Arrow]: Go Up. [Down Arrow]: Go down.");
     }
     else if (write)
     {
         mvprintw(j++, 0, "[Write mode]");
-        mvprintw(j++, 0, "Are you sure you want to make these changes (underlined) [C]: Confirm. [Q]: Back to Edit mode.");
+        // mvprintw(j++, 0, "Are you sure you want to make these changes (underlined) [C]: Confirm. [Q]: Back to Edit mode.");
     }
 
     if (message_string_length > 0)
@@ -107,9 +107,11 @@ void draw_loop(
 
     int ch = getch();
 
+    Diff diff = (*diffs)[*highlight];
+
     switch (ch)
     {
-    /* NAVIGATION */
+    /* NAVIGATION  */
     case KEY_UP:
     case 'K':
     case 'k':
@@ -149,7 +151,7 @@ void draw_loop(
         }
         *highlight = -1;
         break;
-    /* REFRESH */
+    /* NAVIGATION MODE: REFRESH / EDIT MODE: RENAME */
     case 'r':
     case 'R':
         if (*write)
@@ -162,10 +164,7 @@ void draw_loop(
         char new_name[MAX_FILE_NAME_LENGTH];
 
         if (get_new_name(new_name))
-        {
-            strcpy((*diffs)[*highlight].name, new_name);
-            FormatDiffName((*diffs)[*highlight].formatted_name, (*diffs)[*highlight].number, (*diffs)[*highlight].name);
-        }
+            UpdateDiffName(diffs, highlight, diff.number, new_name);
         break;
     /* SWITCH MODES */
     case 'e':
@@ -250,10 +249,7 @@ void draw_loop(
 
                 (*diffs)[i].index = -1;
                 (*diffs)[i].number = number;
-
-                FormatDiffName(formatted_new_name, number, new_name);
-                strcpy((*diffs)[i].name, new_name);
-                strcpy((*diffs)[i].formatted_name, formatted_new_name);
+                UpdateDiffName(diffs, &i, number, new_name);
 
                 (*folder_count)++;
             }
@@ -271,27 +267,28 @@ void draw_loop(
         if (!(*edit) || (*write))
             break;
 
-        if (strcmp((*diffs)[*highlight].formatted_name, "[99] Archive") == 0)
+        if (strcmp(diff.formatted_name, "[99] Archive") == 0)
             break;
 
-        if (!((*diffs)[*highlight]).archive)
-            ((*diffs)[*highlight]).archive = true;
+        if (!(*diffs)[*highlight].archive)
+            (*diffs)[*highlight].archive = true;
         else
-            ((*diffs)[*highlight]).archive = false;
+            (*diffs)[*highlight].archive = false;
 
         break;
-    /* EDIT MODE: NUMBERS */
+    /* EDIT MODE: NUMBERS -WORKS*/
     case '-':
         if (!(*edit) || (*write))
             break;
 
-        if ((*diffs)[*highlight].archive || (*diffs)[*highlight].number <= 1)
+        if (diff.archive || diff.number <= 1)
             break;
 
-        (*diffs)[*highlight].number--;
-        FormatDiffName((*diffs)[*highlight].formatted_name, (*diffs)[*highlight].number, (*diffs)[*highlight].name);
+        diff.number--;
+        (*diffs)[*highlight].number = diff.number;
+        UpdateDiffName(diffs, highlight, diff.number, diff.name);
 
-        while (*highlight > 0 && (*diffs)[*highlight].number < (*diffs)[*highlight - 1].number)
+        while (*highlight > 0 && diff.number < (*diffs)[*highlight - 1].number)
         {
             Diff temp = (*diffs)[*highlight];
             (*diffs)[*highlight] = (*diffs)[*highlight - 1];
@@ -305,13 +302,14 @@ void draw_loop(
         if (!(*edit) || (*write))
             break;
 
-        if ((*diffs)[*highlight].archive || (*diffs)[*highlight].number >= 99)
+        if (diff.archive || diff.number >= 99)
             break;
 
-        (*diffs)[*highlight].number++;
-        FormatDiffName((*diffs)[*highlight].formatted_name, (*diffs)[*highlight].number, (*diffs)[*highlight].name);
+        diff.number++;
+        (*diffs)[*highlight].number = diff.number;
+        UpdateDiffName(diffs, highlight, diff.number, diff.name);
 
-        while (*highlight < *folder_count - 1 && (*diffs)[*highlight].number > (*diffs)[*highlight + 1].number)
+        while (*highlight < *folder_count - 1 && diff.number > (*diffs)[*highlight + 1].number)
         {
             Diff temp = (*diffs)[*highlight];
             (*diffs)[*highlight] = (*diffs)[*highlight + 1];
@@ -327,15 +325,12 @@ void draw_loop(
             break;
 
         int j = 0;
-        char formatted_new_name[OS_MAX_FILE_NAME_LENGTH];
-
         for (int i = 0; i < *folder_count; i++)
         {
             if ((*diffs)[i].archive || strcmp((*diffs)[i].formatted_name, "[99] Archive") == 0)
                 continue;
             (*diffs)[i].number = j++;
-            FormatDiffName(formatted_new_name, j, (*diffs)[i].name);
-            strcpy((*diffs)[i].formatted_name, formatted_new_name);
+            UpdateDiffName(diffs, &i, j, (*diffs)[i].name);
         }
         break;
     }

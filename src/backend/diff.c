@@ -5,6 +5,12 @@ void FormatDiffName(char *str, int number, const char *name)
     snprintf(str, OS_MAX_FILE_NAME_LENGTH, "[%02d] %s", number, name);
 }
 
+void UpdateDiffName(Diff **diffs, int *index, int number, const char *name)
+{
+    strcpy((*diffs)[*index].name, name);
+    FormatDiffName((*diffs)[*index].formatted_name, number, name);
+}
+
 void DiffArrayConstructor(Diff **diffs, Folder *folders, size_t folders_size)
 {
     Diff *diffArray = (Diff *)malloc(MAX_FOLDERS * sizeof(Diff));
