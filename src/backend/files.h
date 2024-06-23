@@ -4,6 +4,7 @@
 #include "diff.h"
 #include "../ui/controls.h"
 #include <dirent.h>
+#include <sys/stat.h>
 
 int path_level(const char *path);
 void list_folders(const char *path, Folder *folders, int *folder_count, Diff **diffs);

@@ -58,21 +58,34 @@ void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_
     for (int i = 0; i < folders_count; i++)
     {
         diff = diffs[i];
-        folder = folders[diff.index];
-        if (strcmp(folder.folder_name, diff.formatted_name) == 0)
-            continue;
-
-        snprintf(original_path, sizeof(new_path), "%s/%s", current_path, folder.folder_name);
-
-        snprintf(new_path, sizeof(new_path), "%s/%s", current_path, diff.formatted_name);
-
-        int r = rename(original_path, new_path);
-
-        if (r)
+        if (diff.index != -1)
         {
-            append_frmt(message_string, message_string_length, "(Failed to rename %s to %s) ", folder.folder_name, diff.formatted_name);
+            folder = folders[diff.index];
+            if (strcmp(folder.folder_name, diff.formatted_name) == 0)
+                continue;
+
+            snprintf(original_path, sizeof(new_path), "%s/%s", current_path, folder.folder_name);
+
+            snprintf(new_path, sizeof(new_path), "%s/%s", current_path, diff.formatted_name);
+
+            int r = rename(original_path, new_path);
+
+            if (r)
+            {
+                append_frmt(message_string, message_string_length, "(Failed to rename %s to %s) ", folder.folder_name, diff.formatted_name);
+            }
+        }
+        else
+        {
+            snprintf(new_path, sizeof(new_path), "%s/%s", current_path, diff.formatted_name);
+
+            // TODO: CREATE FOLDER
+            int r = mkdir(new_path, 0700);
+            if (r)
+            {
+                append_frmt(message_string, message_string_length, "(Failed to create folder %s) ", diff.formatted_name);
+            }
         }
     }
-
     append_str(message_string, message_string_length, "Done!");
 }

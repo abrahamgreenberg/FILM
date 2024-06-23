@@ -49,7 +49,7 @@ void draw_ui(
     for (int i = (*start); i < folder_count; i++)
     {
         h = i == *highlight;
-        u = write ? strcmp(folders[i].folder_name, diffs[i].formatted_name) != 0 : 0;
+        u = write ? (diffs[i].index == -1 || strcmp(folders[i].folder_name, diffs[i].formatted_name) != 0) : 0;
 
         if (h && !write)
             attron(A_STANDOUT);
@@ -170,11 +170,49 @@ void draw_loop(
         break;
     case 'c':
     case 'C':
-        if (!(*write))
+        if (!(*edit))
             break;
-        *edit = *write = 0;
-        write_changes(current_path, folders, *diffs, *folder_count, message_string, message_string_length);
-        render_path[0] = '\0';
+        if (!(*write))
+        {
+            append_str(debug_string, debug_string_length, "CREATE ");
+
+            if (*folder_count >= 100)
+                break;
+            char new_name[MAX_FILE_NAME_LENGTH];
+            char formatted_new_name[OS_MAX_FILE_NAME_LENGTH];
+            int number = 0;
+            int i;
+
+            if (get_new_name(new_name))
+            {
+                for (i = 0; i <= (*folder_count - *highlight - 1); i++)
+                    if ((*diffs)[*highlight + i + 1].number != (*diffs)[*highlight + i].number + 1)
+                        break;
+                number = (*diffs)[*highlight + i].number + 1;
+                if (number == 0)
+                    number == 99;
+                i += *highlight + 1;
+                for (int j = *folder_count; j > i; j--)
+                {
+                    (*diffs)[j] = (*diffs)[j - 1];
+                }
+
+                (*diffs)[i].index = -1;
+                (*diffs)[i].number = number;
+
+                FormatDiffName(formatted_new_name, number, new_name);
+                strcpy((*diffs)[i].name, new_name);
+                strcpy((*diffs)[i].formatted_name, formatted_new_name);
+
+                (*folder_count)++;
+            }
+        }
+        else
+        {
+            *edit = *write = 0;
+            write_changes(current_path, folders, *diffs, *folder_count, message_string, message_string_length);
+            render_path[0] = '\0';
+        }
         break;
     case '\n':
         append_str(debug_string, debug_string_length, "ENTER ");
