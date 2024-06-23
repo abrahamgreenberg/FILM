@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        ".env": "env",
+        "*.env.development": "env",
+        "*.env.production": "env",
+        "ncurses.h": "c",
+        "unistd.h": "c"
+    }
+}

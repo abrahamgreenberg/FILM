@@ -1,0 +1,13 @@
+#ifndef LIMITS_H
+#define LIMITS_H
+
+#define OS_MAX_FILE_NAME_LENGTH 256
+#define MAX_FILE_NAME_LENGTH 200
+#define OS_MAX_PATH_LENGTH 4096
+#define MAX_PATH_LENGTH 3000
+#define MAX_FOLDERS 256
+#define STRING_LENGTH 512
+
+#define DEBUG_MODE 1
+
+#endif
