@@ -22,6 +22,6 @@ void draw_loop(
     int max_level,
     int *highlight,
     int *edit,
-    int *write);
+    int *write, int *help_page);
 
 #endif

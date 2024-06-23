@@ -11,12 +11,6 @@
 /*
 TODO:
 
-REFACTOR:
-- MOVE MORE FUNCTIONS FROM UI.C TO CONTROLS.C E.G CREATING FILES, INCREMENTING, DECREMENTING ETC
-- BETTER UI
-- ADD CONTROLS HELP E.G:
-RELOAD IN NAVIGATION VIEW
-
 FEATURES:
 - ABILITY TO SELECT DIR FROM LAUNCH (E.G ARC AND ARGV)
 - LOOK INTO MAKE VS CLANG VS GCC AND MAKE A NICER DEVELOPMENT CONFIG
@@ -34,6 +28,23 @@ int main()
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
+
+    if (!has_colors())
+    {
+        endwin();
+        printf("Your terminal does not support colour\n");
+        return 1;
+    }
+
+    start_color();
+    use_default_colors();
+
+    // Define some color pairs with default background
+    init_pair(1, COLOR_MAGENTA, -1);
+    init_pair(2, COLOR_YELLOW, -1);
+    init_pair(3, COLOR_BLUE, -1);
+    init_pair(4, COLOR_CYAN, -1);
+    init_pair(5, COLOR_RED, -1);
 
     Folder *folders = FolderArrayConstructor();
     if (folders == NULL)
@@ -58,11 +69,13 @@ int main()
     int edit = 0;
     int write = 0;
 
+    int help_page = 0;
+
     Diff *diffs = NULL;
 
     while (1)
     {
-        draw_loop(current_path, render_path, &diffs, folders, &folder_count, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &edit, &write);
+        draw_loop(current_path, render_path, &diffs, folders, &folder_count, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &edit, &write, &help_page);
     }
 
     endwin();

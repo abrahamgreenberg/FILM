@@ -1,35 +1,80 @@
 #include "ui.h"
 
+void truncate_string_from_position(const char *source, char *destination, size_t start_position, size_t new_length)
+{
+    size_t source_length = strlen(source);
+
+    if (start_position >= source_length)
+    {
+        destination[0] = '\0';
+        return;
+    }
+
+    strncpy(destination, source + start_position, new_length);
+    destination[new_length] = '\0';
+}
+
 void draw_ui(
     Diff *diffs, Folder *folders, int folder_count,
-    const char *current_path, const char *debug, const char *message, int message_string_length, int edit, int write, int *highlight, int max_level, int *start
+    const char *current_path, const char *debug, const char *message, int message_string_length, int edit, int write, int *highlight, int max_level, int *start, int help_page
 
 )
 {
     clear();
+
     int j = 0;
 
     if (DEBUG_MODE == 1)
     {
-        mvprintw(j++, 0, "Current path: %s", current_path);
+        attron(A_DIM);
+        attron(COLOR_PAIR(2));
         mvprintw(j++, 0, "Debug: %s", debug);
+        attroff(COLOR_PAIR(2));
+        attroff(A_DIM);
     }
+    mvprintw(j++, 0, "%s", current_path);
 
+    char help_msg[512];
     if (!edit)
     {
+        attron(COLOR_PAIR(1));
         mvprintw(j++, 0, "[Navigation mode]");
-        // mvprintw(j++, 0, "[Q]: Quit. [E]: Enter edit mode. [Up Arrow]: Go up. [Down Arrow]: Go down. [Enter]: Navigate.");
+        attroff(COLOR_PAIR(1));
+
+        if (help_page == 0)
+            strcpy(help_msg, "Controls (1/2): [2] Page 2. [Q] Quit. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
+        else
+            strcpy(help_msg, "Controls (2/2): [1] Page 1. [Enter] Navigate. [E] Edit mode. [R] Refresh files.");
     }
     else if (edit && !write)
     {
+        attron(COLOR_PAIR(3));
         mvprintw(j++, 0, "[Edit mode]");
-        // mvprintw(j++, 0, "[Q]: Navigation mode. [U]: Move up. [D]: Move down. [R]: Rename. [W]: Write changes. [Up Arrow]: Go Up. [Down Arrow]: Go down.");
+        attroff(COLOR_PAIR(3));
+
+        if (help_page == 0)
+            strcpy(help_msg, "Controls (1/5): [1] Page 1. [2] Page 2. [3] Page 3. [4] Page 4. [5] Page 5. ");
+        else if (help_page == 1)
+            strcpy(help_msg, "Controls (2/5): [Q] Navigation mode. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
+        else if (help_page == 2)
+            strcpy(help_msg, "Controls (3/5): [U] Move up. [D] Move Down. [C] Create folder. [R] Rename folder.");
+        else if (help_page == 3)
+            strcpy(help_msg, "Controls (4/5):  [A] Archive folder. [-] Decrement number. [=] Increment number.");
+        else
+            strcpy(help_msg, "Controls (5/5): [F] Fix numbering. [W] Write changes.");
     }
     else if (write)
     {
+        attron(COLOR_PAIR(4));
         mvprintw(j++, 0, "[Write mode]");
-        // mvprintw(j++, 0, "Are you sure you want to make these changes (underlined) [C]: Confirm. [Q]: Back to Edit mode.");
+        attroff(COLOR_PAIR(4));
+
+        strcpy(help_msg, "Controls: [Q] Edit mode. [C] Confirm.");
     }
+
+    mvprintw(j, 0, "%s", help_msg);
+
+    j += 2;
 
     if (message_string_length > 0)
     {
@@ -88,7 +133,8 @@ void draw_loop(
     int max_level,
     int *highlight,
     int *edit,
-    int *write
+    int *write,
+    int *help_page
 
 )
 {
@@ -100,7 +146,7 @@ void draw_loop(
         list_folders(current_path, folders, folder_count, diffs);
     }
     strcpy(render_path, current_path);
-    draw_ui(*diffs, folders, *folder_count, current_path, debug_string, message_string, *message_string_length, *edit, *write, highlight, max_level, start);
+    draw_ui(*diffs, folders, *folder_count, current_path, debug_string, message_string, *message_string_length, *edit, *write, highlight, max_level, start, *help_page);
 
     debug_string[0] = '\0';
     *debug_string_length = 0;
@@ -111,7 +157,7 @@ void draw_loop(
 
     switch (ch)
     {
-    /* NAVIGATION  */
+    /* NAVIGATION */
     case KEY_UP:
     case 'K':
     case 'k':
@@ -332,6 +378,22 @@ void draw_loop(
             (*diffs)[i].number = j++;
             UpdateDiffName(diffs, &i, j, (*diffs)[i].name);
         }
+        break;
+    /* HELP PAGES */
+    case '1':
+        *help_page = 0;
+        break;
+    case '2':
+        *help_page = 1;
+        break;
+    case '3':
+        *help_page = 2;
+        break;
+    case '4':
+        *help_page = 3;
+        break;
+    case '5':
+        *help_page = 4;
         break;
     }
 }
