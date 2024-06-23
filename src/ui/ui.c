@@ -109,6 +109,7 @@ void draw_loop(
 
     switch (ch)
     {
+    /* NAVIGATION */
     case KEY_UP:
     case 'K':
     case 'k':
@@ -121,10 +122,80 @@ void draw_loop(
         if (*highlight < *folder_count - 1)
             (*highlight)++;
         break;
+    case '\n':
+        if (*edit)
+            break;
+
+        if (*highlight == -1)
+        {
+            char *last_slash = strrchr(current_path, '/');
+            if (last_slash != NULL)
+            {
+                *last_slash = '\0';
+                if (strlen(current_path) == 0)
+                {
+                    strcpy(current_path, "/");
+                }
+            }
+            else
+                strcpy(current_path, ".");
+        }
+        else
+        {
+            char new_path[OS_MAX_PATH_LENGTH];
+            snprintf(new_path, OS_MAX_PATH_LENGTH, "%s/%s", current_path, folders[*highlight].folder_name);
+            strncpy(current_path, new_path, OS_MAX_PATH_LENGTH);
+            current_path[MAX_PATH_LENGTH - 1] = '\0';
+        }
+        *highlight = -1;
+        break;
+    /* REFRESH */
+    case 'r':
+    case 'R':
+        if (*write)
+            break;
+        if (!(*edit))
+        {
+            render_path[0] = '\0';
+            break;
+        }
+        char new_name[MAX_FILE_NAME_LENGTH];
+
+        if (get_new_name(new_name))
+        {
+            strcpy((*diffs)[*highlight].name, new_name);
+            FormatDiffName((*diffs)[*highlight].formatted_name, (*diffs)[*highlight].number, (*diffs)[*highlight].name);
+        }
+        break;
+    /* SWITCH MODES */
     case 'e':
     case 'E':
         *edit = 1;
         break;
+    case 'w':
+    case 'W':
+        if (!(*edit) || (*write))
+            break;
+        (*write) = 1;
+        break;
+    case 'q':
+    case 'Q':
+        if (*write)
+            *write = 0;
+        else if (*edit)
+        {
+            *edit = 0;
+            if (*diffs != NULL)
+                free(*diffs);
+            DiffArrayConstructor(diffs, folders, *folder_count);
+        }
+        else
+        {
+            endwin();
+            exit(0);
+        }
+        break;
+    /* EDIT MODE: ORDER */
     case 'u':
     case 'U':
         if (!(*edit) || *write)
@@ -147,31 +218,7 @@ void draw_loop(
         SwapDiffs(*diffs, *highlight, *highlight + 1);
         (*highlight)++;
         break;
-    case 'w':
-    case 'W':
-        if (!(*edit) || (*write))
-            break;
-
-        (*write) = 1;
-
-        break;
-    case 'r':
-    case 'R':
-        if (*write)
-            break;
-        if (!(*edit))
-        {
-            render_path[0] = '\0';
-            break;
-        }
-        char new_name[MAX_FILE_NAME_LENGTH];
-
-        if (get_new_name(new_name))
-        {
-            strcpy((*diffs)[*highlight].name, new_name);
-            FormatDiffName((*diffs)[*highlight].formatted_name, (*diffs)[*highlight].number, (*diffs)[*highlight].name);
-        }
-        break;
+    /* EDIT MODE: CREATE / WRITE MODE: CONFIRM */
     case 'c':
     case 'C':
         if (!(*edit))
@@ -218,6 +265,7 @@ void draw_loop(
             render_path[0] = '\0';
         }
         break;
+    /* EDIT MODE: ARCHIVE */
     case 'a':
     case 'A':
         if (!(*edit) || (*write))
@@ -232,6 +280,7 @@ void draw_loop(
             ((*diffs)[*highlight]).archive = false;
 
         break;
+    /* EDIT MODE: NUMBERS */
     case '-':
         if (!(*edit) || (*write))
             break;
@@ -287,57 +336,6 @@ void draw_loop(
             (*diffs)[i].number = j++;
             FormatDiffName(formatted_new_name, j, (*diffs)[i].name);
             strcpy((*diffs)[i].formatted_name, formatted_new_name);
-        }
-        break;
-
-    case '\n':
-        append_str(debug_string, debug_string_length, "ENTER ");
-
-        append_frmt(debug_string, debug_string_length, "HL: %d ", *highlight);
-
-        if (*edit)
-            break;
-        if (*highlight == -1)
-        {
-            append_str(debug_string, debug_string_length, "BACK ");
-
-            char *last_slash = strrchr(current_path, '/');
-            if (last_slash != NULL)
-            {
-                *last_slash = '\0';
-                if (strlen(current_path) == 0)
-                {
-                    strcpy(current_path, "/");
-                }
-            }
-            else
-                strcpy(current_path, ".");
-        }
-        else
-        {
-            char new_path[OS_MAX_PATH_LENGTH];
-            snprintf(new_path, OS_MAX_PATH_LENGTH, "%s/%s", current_path, folders[*highlight].folder_name);
-            strncpy(current_path, new_path, OS_MAX_PATH_LENGTH);
-            current_path[MAX_PATH_LENGTH - 1] = '\0';
-        }
-        *highlight = -1;
-        break;
-    case 'q':
-    case 'Q':
-        if (*write)
-            *write = 0;
-        else if (*edit)
-        {
-            *edit = 0;
-
-            if (*diffs != NULL)
-                free(*diffs);
-            DiffArrayConstructor(diffs, folders, *folder_count);
-        }
-        else
-        {
-            endwin();
-            exit(0);
         }
         break;
     }
