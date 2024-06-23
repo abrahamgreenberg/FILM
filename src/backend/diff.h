@@ -3,6 +3,7 @@
 #define DIFF_H
 #include "folders.h"
 #include "../opts.h"
+#include <stdbool.h>
 
 struct Diff
 {
@@ -10,7 +11,7 @@ struct Diff
     short number;
     char name[MAX_FILE_NAME_LENGTH];
     char formatted_name[OS_MAX_FILE_NAME_LENGTH];
-    short archive;
+    bool archive;
 };
 
 typedef struct Diff Diff;

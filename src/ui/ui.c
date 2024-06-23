@@ -227,9 +227,9 @@ void draw_loop(
             break;
 
         if (!((*diffs)[*highlight]).archive)
-            ((*diffs)[*highlight]).archive = 1;
+            ((*diffs)[*highlight]).archive = true;
         else
-            ((*diffs)[*highlight]).archive = 0;
+            ((*diffs)[*highlight]).archive = false;
 
         break;
     case '-':
