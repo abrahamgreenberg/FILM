@@ -33,7 +33,8 @@ void draw_ui(
 
     if (message_string_length > 0)
     {
-        mvprintw(j++, 0, "%s", message);
+        mvprintw(j + 1, 0, "%s", message);
+        j += 2;
     }
 
     *start = path_level(current_path) == max_level && !DEBUG_MODE ? 0 : -1;
