@@ -228,6 +228,64 @@ void draw_loop(
             ((*diffs)[*highlight]).archive = 0;
 
         break;
+    case '-':
+        if (!(*edit) || (*write))
+            break;
+
+        if ((*diffs)[*highlight].archive || (*diffs)[*highlight].number <= 1)
+            break;
+
+        (*diffs)[*highlight].number--;
+        FormatDiffName((*diffs)[*highlight].formatted_name, (*diffs)[*highlight].number, (*diffs)[*highlight].name);
+
+        while (*highlight > 0 && (*diffs)[*highlight].number < (*diffs)[*highlight - 1].number)
+        {
+            Diff temp = (*diffs)[*highlight];
+            (*diffs)[*highlight] = (*diffs)[*highlight - 1];
+            (*diffs)[*highlight - 1] = temp;
+
+            (*highlight)--;
+        }
+
+        break;
+    case '=':
+        if (!(*edit) || (*write))
+            break;
+
+        if ((*diffs)[*highlight].archive || (*diffs)[*highlight].number >= 99)
+            break;
+
+        (*diffs)[*highlight].number++;
+        FormatDiffName((*diffs)[*highlight].formatted_name, (*diffs)[*highlight].number, (*diffs)[*highlight].name);
+
+        while (*highlight < *folder_count - 1 && (*diffs)[*highlight].number > (*diffs)[*highlight + 1].number)
+        {
+            Diff temp = (*diffs)[*highlight];
+            (*diffs)[*highlight] = (*diffs)[*highlight + 1];
+            (*diffs)[*highlight + 1] = temp;
+
+            (*highlight)++;
+        }
+
+        break;
+    case 'f':
+    case 'F':
+        if (!(*edit) || (*write))
+            break;
+
+        int j = 0;
+        char formatted_new_name[OS_MAX_FILE_NAME_LENGTH];
+
+        for (int i = 0; i < *folder_count; i++)
+        {
+            if ((*diffs)[i].archive || strcmp((*diffs)[i].formatted_name, "[99] Archive") == 0)
+                continue;
+            (*diffs)[i].number = j++;
+            FormatDiffName(formatted_new_name, j, (*diffs)[i].name);
+            strcpy((*diffs)[i].formatted_name, formatted_new_name);
+        }
+        break;
+
     case '\n':
         append_str(debug_string, debug_string_length, "ENTER ");
 
