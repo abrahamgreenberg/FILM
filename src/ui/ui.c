@@ -49,7 +49,7 @@ void draw_ui(
     for (int i = (*start); i < folder_count; i++)
     {
         h = i == *highlight;
-        u = write ? (diffs[i].index == -1 || strcmp(folders[i].folder_name, diffs[i].formatted_name) != 0) : 0;
+        u = write ? (diffs[i].index == -1 || diffs[i].archive || strcmp(folders[i].folder_name, diffs[i].formatted_name) != 0) : 0;
 
         if (h && !write)
             attron(A_STANDOUT);
@@ -63,7 +63,7 @@ void draw_ui(
 
         else
 
-            mvprintw(i + j, 0, "%s", diffs[i].formatted_name);
+            mvprintw(i + j, 0, "%s%s", diffs[i].archive ? "* " : "", diffs[i].formatted_name);
 
         if (h && !write)
             attroff(A_STANDOUT);
@@ -213,6 +213,20 @@ void draw_loop(
             write_changes(current_path, folders, *diffs, *folder_count, message_string, message_string_length);
             render_path[0] = '\0';
         }
+        break;
+    case 'a':
+    case 'A':
+        if (!(*edit) || (*write))
+            break;
+
+        if (strcmp((*diffs)[*highlight].formatted_name, "[99] Archive") == 0)
+            break;
+
+        if (!((*diffs)[*highlight]).archive)
+            ((*diffs)[*highlight]).archive = 1;
+        else
+            ((*diffs)[*highlight]).archive = 0;
+
         break;
     case '\n':
         append_str(debug_string, debug_string_length, "ENTER ");

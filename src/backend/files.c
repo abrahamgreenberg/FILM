@@ -58,32 +58,51 @@ void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_
     for (int i = 0; i < folders_count; i++)
     {
         diff = diffs[i];
-        if (diff.index != -1)
-        {
-            folder = folders[diff.index];
-            if (strcmp(folder.folder_name, diff.formatted_name) == 0)
-                continue;
-
-            snprintf(original_path, sizeof(new_path), "%s/%s", current_path, folder.folder_name);
-
-            snprintf(new_path, sizeof(new_path), "%s/%s", current_path, diff.formatted_name);
-
-            int r = rename(original_path, new_path);
-
-            if (r)
+        if (!diff.archive)
+            if (diff.index != -1)
             {
-                append_frmt(message_string, message_string_length, "(Failed to rename %s to %s) ", folder.folder_name, diff.formatted_name);
+                folder = folders[diff.index];
+                if (strcmp(folder.folder_name, diff.formatted_name) == 0)
+                    continue;
+
+                snprintf(original_path, sizeof(new_path), "%s/%s", current_path, folder.folder_name);
+                snprintf(new_path, sizeof(new_path), "%s/%s", current_path, diff.formatted_name);
+
+                if (rename(original_path, new_path))
+                    append_frmt(message_string, message_string_length, "(Failed to rename %s to %s) ", folder.folder_name, diff.formatted_name);
             }
-        }
-        else
-        {
-            snprintf(new_path, sizeof(new_path), "%s/%s", current_path, diff.formatted_name);
-
-            // TODO: CREATE FOLDER
-            int r = mkdir(new_path, 0700);
-            if (r)
+            else
             {
-                append_frmt(message_string, message_string_length, "(Failed to create folder %s) ", diff.formatted_name);
+                snprintf(new_path, sizeof(new_path), "%s/%s", current_path, diff.formatted_name);
+
+                if (mkdir(new_path, 0700))
+                    append_frmt(message_string, message_string_length, "(Failed to create folder %s) ", diff.formatted_name);
+            }
+        else if (diff.archive && diff.index != -1)
+        {
+            struct stat sb;
+            snprintf(original_path, sizeof(new_path), "%s/%s", current_path, "[99] Archive");
+
+            int a = 1;
+
+            if (stat(original_path, &sb) != 0)
+                if (mkdir(original_path, 0700))
+                    append_str(message_string, message_string_length, "(Failed to create folder [99] Archive) ");
+                else if (!S_ISDIR(sb.st_mode))
+                {
+                    append_str(message_string, message_string_length, "(A file by the name [99] Archive already exists) ");
+                    a = 0;
+                }
+
+            if (a)
+            {
+                folder = folders[diff.index];
+
+                snprintf(original_path, sizeof(new_path), "%s/%s", current_path, folder.folder_name);
+                snprintf(new_path, sizeof(new_path), "%s/[99] Archive/%s", current_path, diff.name);
+
+                if (rename(original_path, new_path))
+                    append_frmt(message_string, message_string_length, "(Failed to archive %s) ", diff.formatted_name);
             }
         }
     }

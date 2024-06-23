@@ -10,6 +10,7 @@ struct Diff
     short number;
     char name[MAX_FILE_NAME_LENGTH];
     char formatted_name[OS_MAX_FILE_NAME_LENGTH];
+    short archive;
 };
 
 typedef struct Diff Diff;
