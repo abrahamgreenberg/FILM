@@ -110,10 +110,14 @@ void draw_loop(
     switch (ch)
     {
     case KEY_UP:
+    case 'K':
+    case 'k':
         if (*highlight > *start)
             (*highlight)--;
         break;
     case KEY_DOWN:
+    case 'j':
+    case 'J':
         if (*highlight < *folder_count - 1)
             (*highlight)++;
         break;
