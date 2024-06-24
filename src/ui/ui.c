@@ -153,239 +153,24 @@ void file_manager_draw_loop(
     debug_string[0] = '\0';
     *debug_string_length = 0;
 
-    Diff diff = (*diffs)[*highlight];
     int ch = getch();
 
     switch (ch)
     {
-    /* NAVIGATION */
     case KEY_UP:
     case 'k':
     case 'K':
-        if (*highlight > *start)
-            (*highlight)--;
+        if (*view != WRITE)
+            if (*highlight > *start)
+                (*highlight)--;
         break;
     case KEY_DOWN:
     case 'j':
     case 'J':
-        if (*highlight < *folder_count - 1)
-            (*highlight)++;
+        if (*view != WRITE)
+            if (*highlight < *folder_count - 1)
+                (*highlight)++;
         break;
-    case '\n':
-        if (*view == EDIT)
-            break;
-
-        if (*highlight == -1)
-        {
-            char *last_slash = strrchr(current_path, '/');
-            if (last_slash != NULL)
-            {
-                *last_slash = '\0';
-                if (strlen(current_path) == 0)
-                {
-                    strcpy(current_path, "/");
-                }
-            }
-            else
-                strcpy(current_path, ".");
-        }
-        else
-        {
-            char new_path[OS_MAX_PATH_LENGTH];
-            snprintf(new_path, OS_MAX_PATH_LENGTH, "%s/%s", current_path, folders[*highlight].folder_name);
-            strncpy(current_path, new_path, OS_MAX_PATH_LENGTH);
-            current_path[MAX_PATH_LENGTH - 1] = '\0';
-        }
-        *highlight = -1;
-        break;
-    /* NAVIGATION MODE: REFRESH / EDIT MODE: RENAME */
-    case 'r':
-    case 'R':
-        if (*view == NAVIGATE)
-        {
-            render_path[0] = '\0';
-            break;
-        }
-        char new_name[MAX_FILE_NAME_LENGTH];
-
-        if (get_new_name(new_name))
-            UpdateDiffName(diffs, highlight, diff.number, new_name);
-        break;
-    /* SWITCH MODES */
-    case 'e':
-    case 'E':
-        *view = EDIT;
-        break;
-    case 'w':
-    case 'W':
-        if (*view != EDIT)
-            break;
-        *view = WRITE;
-        break;
-    case 'q':
-    case 'Q':
-        if (*view == WRITE)
-            *view = EDIT;
-        else if (*view == EDIT)
-        {
-            *view = NAVIGATE;
-            if (*diffs != NULL)
-                free(*diffs);
-            DiffArrayConstructor(diffs, folders, *folder_count);
-        }
-        else
-        {
-            endwin();
-            exit(0);
-        }
-        break;
-    case 's':
-    case 'S':
-        if (*view != NAVIGATE)
-            break;
-        *view = SETTINGS;
-        break;
-    /* EDIT MODE: ORDER */
-    case 'u':
-    case 'U':
-        // if (!(*edit) || *write)
-        //     break;
-        if (*view != EDIT)
-            break;
-
-        if ((*highlight) <= 0)
-            break;
-
-        SwapDiffs(*diffs, *highlight, *highlight - 1);
-        (*highlight)--;
-        break;
-    case 'd':
-    case 'D':
-        if (*view != EDIT)
-            break;
-
-        if ((*highlight) >= (*folder_count) - 1)
-            break;
-
-        SwapDiffs(*diffs, *highlight, *highlight + 1);
-        (*highlight)++;
-        break;
-    /* EDIT MODE: CREATE / WRITE MODE: CONFIRM */
-    case 'c':
-    case 'C':
-        if (*view == EDIT)
-        {
-            append_str(debug_string, debug_string_length, "CREATE ");
-
-            if (*folder_count >= 100)
-                break;
-            char new_name[MAX_FILE_NAME_LENGTH];
-            int number = 0;
-            int i = 0;
-
-            if (get_new_name(new_name))
-            {
-                if (*folder_count == 0)
-                    number = 1;
-                else
-                {
-                    for (; i <= (*folder_count - *highlight - 1); i++)
-                        if ((*diffs)[*highlight + i + 1].number != (*diffs)[*highlight + i].number + 1)
-                            break;
-                    number = (*diffs)[*highlight + i].number + 1;
-
-                    if (number == 0)
-                        number = 99;
-                    i += *highlight + 1;
-                    for (int j = *folder_count; j > i; j--)
-                    {
-                        (*diffs)[j] = (*diffs)[j - 1];
-                    }
-                }
-                (*diffs)[i].index = -1;
-                (*diffs)[i].number = number;
-                ToggleDiffAction(&(*diffs)[i], CREATE);
-                UpdateDiffName(diffs, &i, number, new_name);
-                (*folder_count)++;
-            }
-        }
-        else if (*view == WRITE)
-        {
-            *view = NAVIGATE;
-            write_changes(current_path, folders, *diffs, *folder_count, message_string, message_string_length);
-            render_path[0] = '\0';
-        }
-        break;
-    /* EDIT MODE: ARCHIVE */
-    case 'a':
-    case 'A':
-        if (*view != EDIT)
-            break;
-
-        if (strcmp(diff.formatted_name, "[99] Archive") == 0)
-            break;
-
-        ToggleDiffAction(&(*diffs)[*highlight], ARCHIVE);
-
-        break;
-    /* EDIT MODE: NUMBERS */
-    case '-':
-        if (*view != EDIT)
-            break;
-
-        if (DiffHasAction(diff, ARCHIVE) || diff.number <= 1)
-            break;
-
-        diff.number--;
-        (*diffs)[*highlight].number = diff.number;
-        UpdateDiffName(diffs, highlight, diff.number, diff.name);
-
-        while (*highlight > 0 && diff.number < (*diffs)[*highlight - 1].number)
-        {
-            Diff temp = (*diffs)[*highlight];
-            (*diffs)[*highlight] = (*diffs)[*highlight - 1];
-            (*diffs)[*highlight - 1] = temp;
-
-            (*highlight)--;
-        }
-
-        break;
-    case '=':
-        if (*view != EDIT)
-            break;
-
-        if (DiffHasAction(diff, ARCHIVE) || diff.number >= 99)
-            break;
-
-        diff.number++;
-        (*diffs)[*highlight].number = diff.number;
-        UpdateDiffName(diffs, highlight, diff.number, diff.name);
-
-        while (*highlight < *folder_count - 1 && diff.number > (*diffs)[*highlight + 1].number)
-        {
-            Diff temp = (*diffs)[*highlight];
-            (*diffs)[*highlight] = (*diffs)[*highlight + 1];
-            (*diffs)[*highlight + 1] = temp;
-
-            (*highlight)++;
-        }
-
-        break;
-    case 'f':
-    case 'F':
-        if (*view != EDIT)
-            break;
-
-        int j = 0;
-        for (int i = 0; i < *folder_count; i++)
-        {
-            if (DiffHasAction(diff, ARCHIVE) || strcmp((*diffs)[i].formatted_name, "[99] Archive") == 0)
-                continue;
-            (*diffs)[i].number = j++;
-            UpdateDiffName(diffs, &i, j, (*diffs)[i].name);
-        }
-        break;
-    /* HELP PAGES */
     case '1':
         *help_page = 0;
         break;
@@ -402,4 +187,52 @@ void file_manager_draw_loop(
         *help_page = 4;
         break;
     }
+
+    switch (*view)
+    {
+    case NAVIGATE:
+        navigate_controls(ch, highlight, current_path, render_path, folders, view);
+        break;
+    case EDIT:
+        edit_controls(ch, &(*diffs)[*highlight], diffs, highlight, folders, folder_count, view, debug_string, debug_string_length);
+        break;
+    case WRITE:
+        write_controls(ch, view, current_path, folders, *diffs, *folder_count, message_string, message_string_length, render_path);
+        break;
+    default:
+        break;
+    }
+
+    // switch (ch)
+
+    // case 'q':
+    // case 'Q':
+    //     if (*view == WRITE)
+    //         *view = EDIT;
+    //     else if (*view == EDIT)
+    //     {
+    //         *view = NAVIGATE;
+    //         if (*diffs != NULL)
+    //             free(*diffs);
+    //         DiffArrayConstructor(diffs, folders, *folder_count);
+    //     }
+    // (0);
+    //     }
+    //     break;
+
+    // /* EDIT MODE: CREATE / WRITE MODE: CONFIRM */
+    // 'c'
+    //     else if (*view == WRITE)
+    //     {
+    //         *view = NAVIGATE;
+    //         write_changes(current_path, folders, *diffs, *folder_count, message_string, message_string_length);
+    //         render_path[0] = '\0';
+    //     }
+    //     break;
+
+    // /*
+    //     break;
+    // /* HELP PAGES */
+
+    // }
 }

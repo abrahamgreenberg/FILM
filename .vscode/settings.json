@@ -6,6 +6,8 @@
         "*.env.production": "env",
         "ncurses.h": "c",
         "unistd.h": "c",
-        "settings.h": "c"
+        "settings.h": "c",
+        "stdlib.h": "c",
+        "diff.h": "c"
     }
 }
