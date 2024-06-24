@@ -11,6 +11,8 @@ void settings_draw_ui(Settings *settings, int highlight)
     char string_value[STRING_LENGTH];
     bool h;
 
+    const char *ColourNames[] = {"Default", "Dracula", "Fancy"};
+
     for (int i = 0; i < settings->count * 2; i += 2)
     {
         h = highlight == i >> 1;
@@ -23,7 +25,8 @@ void settings_draw_ui(Settings *settings, int highlight)
             strcpy(string_value, settings->settings[i >> 1].value.boolValue == false ? "[ ]" : "[*]");
             break;
         case COLOUR:
-            strcpy(string_value, settings->settings[i >> 1].value.colourValue == 0 ? "Default" : "Broken");
+            strcpy(string_value,
+                   ColourNames[settings->settings[i >> 1].value.colourValue]);
             break;
         }
 

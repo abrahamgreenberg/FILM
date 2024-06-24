@@ -13,6 +13,14 @@ typedef enum
     COLOUR
 } SettingType;
 
+typedef enum
+{
+    DEFAULT_THEME,
+    DRACULA_THEME,
+    FANCY_THEME,
+    COLOUR_AMOUNT
+} ColourTheme;
+
 typedef struct
 {
     char *name;
@@ -20,7 +28,7 @@ typedef struct
     union
     {
         bool boolValue;
-        int colourValue;
+        ColourTheme colourValue;
     } value;
 } Setting;
 
@@ -30,8 +38,14 @@ typedef struct
     int count;
 } Settings;
 
+typedef enum
+{
+    CREATE_ARCHIVE,
+    COLOUR_THEME
+} SettingIndexes;
+
 Setting createBooleanSetting(const char *name, bool value);
-Setting createColourSetting(const char *name, int value);
+Setting createColourSetting(const char *name, ColourTheme value);
 void initialise_settings(Settings *settings);
 void free_settings(Settings *settings);
 #endif

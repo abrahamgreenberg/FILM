@@ -20,7 +20,7 @@ Setting createBooleanSetting(const char *name, bool value)
     return setting;
 }
 
-Setting createColourSetting(const char *name, int value)
+Setting createColourSetting(const char *name, ColourTheme value)
 {
     Setting setting;
     initialise_setting_name(&setting, name);
@@ -40,8 +40,8 @@ void initialise_settings(Settings *settings)
         exit(1);
     }
 
-    settings->settings[0] = createBooleanSetting("Create archive", true);
-    settings->settings[1] = createColourSetting("Colour Theme", 0);
+    settings->settings[CREATE_ARCHIVE] = createBooleanSetting("Create archive", true);
+    settings->settings[COLOUR_THEME] = createColourSetting("Colour Theme", DEFAULT_THEME);
 }
 
 void free_settings(Settings *settings)
