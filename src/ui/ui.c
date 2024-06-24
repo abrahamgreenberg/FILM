@@ -90,26 +90,29 @@ void draw_ui(
 
     int h = 0;
     int u = 0;
+    int y = 0;
 
     for (int i = (*start); i < folder_count; i++)
     {
         h = i == *highlight;
         u = write ? (diffs[i].index == -1 || diffs[i].archive || strcmp(folders[i].folder_name, diffs[i].formatted_name) != 0) : 0;
+        y = diffs[i].archive;
 
         if (h && !write)
             attron(A_STANDOUT);
-
         if (u)
             attron(A_UNDERLINE);
+        if (y)
+            attron(COLOR_PAIR(2));
 
         if (i == -1)
-
             mvprintw(j++, 0, "..");
-
         else
+            mvprintw(i + j, 0, "%s%s", diffs[i].archive ? "* " : "",
+                     diffs[i].formatted_name);
 
-            mvprintw(i + j, 0, "%s%s", diffs[i].archive ? "* " : "", diffs[i].formatted_name);
-
+        if (y)
+            attroff(COLOR_PAIR(2));
         if (h && !write)
             attroff(A_STANDOUT);
         if (u)
