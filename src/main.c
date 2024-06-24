@@ -2,11 +2,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 
+#include "main.h"
 #include "opts.h"
 #include "backend/folders.h"
 #include "backend/diff.h"
 #include "ui/ui.h"
+#include "settings/settings.h"
 
 /*
 
@@ -16,10 +19,11 @@ MAKE A SETTINGS UI/SYSTEM:
 - MOVE FUNCTIONS TO CONTROLS.C
 - COLOR THEMES
 
-BUGFIX: MESSAGE HAS DONE MULTIPKE TIMES
+BUGFIX: MESSAGE IS SET MULTIPLE TIMES
 BUGFIX: LIMIT MESSAGE CHARACTERS
 BUGFIX: WHEN ARCHIVING A FOLDER THAT EXISTS IN THE ARCHIVE IT OVERIDES IT
 TODO: ABILITY TO BRING IN FOLDERS THAT DON'T FOLLOW THE SYSTEM?
+TODO: REPLACE WRITE AND EDIT WITH BOOLEAN OR MAKE IT AN ENUMr
 
  */
 
@@ -36,6 +40,9 @@ int main(int argc, char *argv[])
         printf("Your terminal does not support colour\n");
         return 1;
     }
+
+    Settings settings;
+    initialise_settings(&settings);
 
     start_color();
     use_default_colors();
@@ -78,16 +85,13 @@ int main(int argc, char *argv[])
     int folder_count = 0;
     int highlight = -1;
 
-    int edit = 0;
-    int write = 0;
-
     int help_page = 0;
-
     Diff *diffs = NULL;
+    View view = NAVIGATE;
 
     while (1)
     {
-        draw_loop(current_path, render_path, &diffs, folders, &folder_count, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &edit, &write, &help_page);
+        draw_loop(current_path, render_path, &diffs, folders, &folder_count, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page);
     }
 
     endwin();

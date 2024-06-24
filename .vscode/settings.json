@@ -5,6 +5,7 @@
         "*.env.development": "env",
         "*.env.production": "env",
         "ncurses.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "settings.h": "c"
     }
 }

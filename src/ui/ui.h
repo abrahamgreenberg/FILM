@@ -1,6 +1,7 @@
 #ifndef UI_H
 #define UI_H
 
+#include "../main.h"
 #include "../opts.h"
 #include "../backend/diff.h"
 #include "../backend/folders.h"
@@ -21,7 +22,7 @@ void draw_loop(
     int *start,
     int max_level,
     int *highlight,
-    int *edit,
-    int *write, int *help_page);
+    View *view,
+    int *help_page);
 
 #endif

@@ -16,7 +16,7 @@ void truncate_string_from_position(const char *source, char *destination, size_t
 
 void draw_ui(
     Diff *diffs, Folder *folders, int folder_count,
-    const char *current_path, const char *debug, const char *message, int message_string_length, int edit, int write, int *highlight, int max_level, int *start, int help_page
+    const char *current_path, const char *debug, const char *message, int message_string_length, int *highlight, int max_level, int *start, View view, int help_page
 
 )
 {
@@ -35,7 +35,7 @@ void draw_ui(
     mvprintw(j++, 0, "%s", current_path);
 
     char help_msg[512];
-    if (!edit)
+    if (view == NAVIGATE)
     {
         attron(COLOR_PAIR(1));
         mvprintw(j++, 0, "[Navigation mode]");
@@ -46,7 +46,7 @@ void draw_ui(
         else
             strcpy(help_msg, "Controls (2/2): [1] Page 1. [Enter] Navigate. [E] Edit mode. [R] Refresh files.");
     }
-    else if (edit && !write)
+    else if (view == EDIT)
     {
         attron(COLOR_PAIR(3));
         mvprintw(j++, 0, "[Edit mode]");
@@ -63,7 +63,7 @@ void draw_ui(
         else
             strcpy(help_msg, "Controls (5/5): [F] Fix numbering. [W] Write changes.");
     }
-    else if (write)
+    else if (view == WRITE)
     {
         attron(COLOR_PAIR(4));
         mvprintw(j++, 0, "[Write mode]");
@@ -83,7 +83,7 @@ void draw_ui(
     }
 
     *start = path_level(current_path) == max_level && !DEBUG_MODE ? 0 : -1;
-    if (edit)
+    if (view != NAVIGATE)
         *start = 0;
     if ((*highlight) == -1 && (*start) == 0)
         (*highlight) = 0;
@@ -95,10 +95,10 @@ void draw_ui(
     for (int i = (*start); i < folder_count; i++)
     {
         h = i == *highlight;
-        u = write ? (!DiffHasAction(diffs[i], NAME) || strcmp(folders[diffs[i].index].folder_name, diffs[i].formatted_name) != 0) : 0;
+        u = view == WRITE ? (!DiffHasAction(diffs[i], NAME) || strcmp(folders[diffs[i].index].folder_name, diffs[i].formatted_name) != 0) : 0;
         y = DiffHasAction(diffs[i], ARCHIVE);
 
-        if (h && !write)
+        if (h && view != WRITE)
             attron(A_STANDOUT);
         if (u)
             attron(A_UNDERLINE);
@@ -113,7 +113,7 @@ void draw_ui(
 
         if (y)
             attroff(COLOR_PAIR(2));
-        if (h && !write)
+        if (h && view != WRITE)
             attroff(A_STANDOUT);
         if (u)
             attroff(A_UNDERLINE);
@@ -135,8 +135,7 @@ void draw_loop(
     int *start,
     int max_level,
     int *highlight,
-    int *edit,
-    int *write,
+    View *view,
     int *help_page
 
 )
@@ -149,7 +148,7 @@ void draw_loop(
         list_folders(current_path, folders, folder_count, diffs);
     }
     strcpy(render_path, current_path);
-    draw_ui(*diffs, folders, *folder_count, current_path, debug_string, message_string, *message_string_length, *edit, *write, highlight, max_level, start, *help_page);
+    draw_ui(*diffs, folders, *folder_count, current_path, debug_string, message_string, *message_string_length, highlight, max_level, start, *view, *help_page);
 
     debug_string[0] = '\0';
     *debug_string_length = 0;
@@ -174,7 +173,7 @@ void draw_loop(
             (*highlight)++;
         break;
     case '\n':
-        if (*edit)
+        if (*view == EDIT)
             break;
 
         if (*highlight == -1)
@@ -203,9 +202,7 @@ void draw_loop(
     /* NAVIGATION MODE: REFRESH / EDIT MODE: RENAME */
     case 'r':
     case 'R':
-        if (*write)
-            break;
-        if (!(*edit))
+        if (*view == NAVIGATE)
         {
             render_path[0] = '\0';
             break;
@@ -218,21 +215,21 @@ void draw_loop(
     /* SWITCH MODES */
     case 'e':
     case 'E':
-        *edit = 1;
+        *view = EDIT;
         break;
     case 'w':
     case 'W':
-        if (!(*edit) || (*write))
+        if (*view != EDIT)
             break;
-        (*write) = 1;
+        *view = WRITE;
         break;
     case 'q':
     case 'Q':
-        if (*write)
-            *write = 0;
-        else if (*edit)
+        if (*view == WRITE)
+            *view = EDIT;
+        else if (*view == EDIT)
         {
-            *edit = 0;
+            *view = NAVIGATE;
             if (*diffs != NULL)
                 free(*diffs);
             DiffArrayConstructor(diffs, folders, *folder_count);
@@ -246,7 +243,9 @@ void draw_loop(
     /* EDIT MODE: ORDER */
     case 'u':
     case 'U':
-        if (!(*edit) || *write)
+        // if (!(*edit) || *write)
+        //     break;
+        if (*view != EDIT)
             break;
 
         if ((*highlight) <= 0)
@@ -257,7 +256,7 @@ void draw_loop(
         break;
     case 'd':
     case 'D':
-        if (!(*edit) || (*write))
+        if (*view != EDIT)
             break;
 
         if ((*highlight) >= (*folder_count) - 1)
@@ -269,9 +268,7 @@ void draw_loop(
     /* EDIT MODE: CREATE / WRITE MODE: CONFIRM */
     case 'c':
     case 'C':
-        if (!(*edit))
-            break;
-        if (!(*write))
+        if (*view == EDIT)
         {
             append_str(debug_string, debug_string_length, "CREATE ");
 
@@ -307,9 +304,9 @@ void draw_loop(
                 (*folder_count)++;
             }
         }
-        else
+        else if (*view == WRITE)
         {
-            *edit = *write = 0;
+            *view = NAVIGATE;
             write_changes(current_path, folders, *diffs, *folder_count, message_string, message_string_length);
             render_path[0] = '\0';
         }
@@ -317,7 +314,7 @@ void draw_loop(
     /* EDIT MODE: ARCHIVE */
     case 'a':
     case 'A':
-        if (!(*edit) || (*write))
+        if (*view != EDIT)
             break;
 
         if (strcmp(diff.formatted_name, "[99] Archive") == 0)
@@ -326,9 +323,9 @@ void draw_loop(
         ToggleDiffAction(&(*diffs)[*highlight], ARCHIVE);
 
         break;
-    /* EDIT MODE: NUMBERS -WORKS*/
+    /* EDIT MODE: NUMBERS */
     case '-':
-        if (!(*edit) || (*write))
+        if (*view != EDIT)
             break;
 
         if (DiffHasAction(diff, ARCHIVE) || diff.number <= 1)
@@ -349,7 +346,7 @@ void draw_loop(
 
         break;
     case '=':
-        if (!(*edit) || (*write))
+        if (*view != EDIT)
             break;
 
         if (DiffHasAction(diff, ARCHIVE) || diff.number >= 99)
@@ -371,7 +368,7 @@ void draw_loop(
         break;
     case 'f':
     case 'F':
-        if (!(*edit) || (*write))
+        if (*view != EDIT)
             break;
 
         int j = 0;
