@@ -12,8 +12,8 @@
 TODO:
 
 FEATURES:
-- ABILITY TO SELECT DIR FROM LAUNCH (E.G ARC AND ARGV)
 - LOOK INTO MAKE VS CLANG VS GCC AND MAKE A NICER DEVELOPMENT CONFIG
+-BUGFIX: FOR SOME REASON WHEN CREATING A FOLDER IN A DIRECTORY WITH OTHER FILES, ARCHIVE IS SOMETIMES HIGHLIGHTED IN WRITE MODE, OTHER TIMES NOT
 - REFACTOR:
 DIFF.ACTION
 1 FOR RENAME
@@ -28,7 +28,7 @@ MAKE A SETTINGS UI/SYSTEM:
 
  */
 
-int main()
+int main(int argc, char *argv[])
 {
     initscr();
     noecho();
@@ -57,7 +57,19 @@ int main()
 
     char render_path[MAX_PATH_LENGTH];
     char current_path[MAX_PATH_LENGTH];
-    strcpy(current_path, getcwd(NULL, 0));
+    if (argc != 2)
+        strcpy(current_path, getcwd(NULL, 0));
+    else
+    {
+        IsDirReturnType isDir = is_dir(argv[1]);
+        if (isDir != EXISTS)
+        {
+            printf("Invalid folder provided");
+            return 1;
+        }
+        else
+            strcpy(current_path, argv[1]);
+    }
 
     char debug_string[STRING_LENGTH] = "";
     int debug_string_length = 0;

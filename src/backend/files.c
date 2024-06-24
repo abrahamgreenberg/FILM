@@ -45,6 +45,17 @@ void list_folders(const char *path, Folder *folders, int *folder_count, Diff **d
     *folder_count = temp_count;
 }
 
+IsDirReturnType is_dir(const char *path)
+{
+    struct stat sb;
+    if (stat(path, &sb) == 0)
+        if (!S_ISDIR(sb.st_mode))
+            return NOT_A_DIR;
+        else
+            return EXISTS;
+    return DOES_NOT_EXIST;
+}
+
 void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_t folders_count, char *message_string, int *message_string_length)
 {
     char original_path[MAX_PATH_LENGTH];
@@ -80,19 +91,16 @@ void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_
             }
         else if (diff.archive && diff.index != -1)
         {
-            struct stat sb;
             snprintf(original_path, sizeof(new_path), "%s/%s", current_path, "[99] Archive");
 
             int a = 1;
 
-            if (stat(original_path, &sb) != 0)
+            IsDirReturnType isDir = is_dir(original_path);
+            if (isDir == NOT_A_DIR)
+                a = 0, append_str(message_string, message_string_length, "(A file by the name [99] Archive already exists) ");
+            else if (isDir == DOES_NOT_EXIST)
                 if (mkdir(original_path, 0700))
                     append_str(message_string, message_string_length, "(Failed to create folder [99] Archive) ");
-                else if (!S_ISDIR(sb.st_mode))
-                {
-                    append_str(message_string, message_string_length, "(A file by the name [99] Archive already exists) ");
-                    a = 0;
-                }
 
             if (a)
             {
