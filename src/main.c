@@ -10,6 +10,7 @@
 #include "backend/diff.h"
 #include "ui/ui.h"
 #include "settings/settings.h"
+#include "settings/settings_ui.h"
 
 /*
 
@@ -91,7 +92,11 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        draw_loop(current_path, render_path, &diffs, folders, &folder_count, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page);
+        if (view != SETTINGS)
+            file_manager_draw_loop(current_path, render_path, &diffs, folders, &folder_count, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page);
+        else
+            // mvprintw(0, 0, "hi");
+            settings_draw_loop(&view);
     }
 
     endwin();

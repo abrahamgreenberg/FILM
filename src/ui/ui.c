@@ -122,7 +122,7 @@ void draw_ui(
     refresh();
 }
 
-void draw_loop(
+void file_manager_draw_loop(
     char *current_path,
     char *render_path,
     Diff **diffs,
@@ -153,16 +153,15 @@ void draw_loop(
     debug_string[0] = '\0';
     *debug_string_length = 0;
 
-    int ch = getch();
-
     Diff diff = (*diffs)[*highlight];
+    int ch = getch();
 
     switch (ch)
     {
     /* NAVIGATION */
     case KEY_UP:
-    case 'K':
     case 'k':
+    case 'K':
         if (*highlight > *start)
             (*highlight)--;
         break;
@@ -239,6 +238,12 @@ void draw_loop(
             endwin();
             exit(0);
         }
+        break;
+    case 's':
+    case 'S':
+        if (*view != NAVIGATE)
+            break;
+        *view = SETTINGS;
         break;
     /* EDIT MODE: ORDER */
     case 'u':

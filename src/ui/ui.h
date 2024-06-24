@@ -9,7 +9,7 @@
 #include "controls.h"
 #include <ncurses.h>
 
-void draw_loop(
+void file_manager_draw_loop(
     char *current_path,
     char *render_path,
     Diff **diffs,
