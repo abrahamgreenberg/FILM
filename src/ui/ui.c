@@ -277,26 +277,31 @@ void draw_loop(
             char new_name[MAX_FILE_NAME_LENGTH];
             char formatted_new_name[OS_MAX_FILE_NAME_LENGTH];
             int number = 0;
-            int i;
+            int i = 0;
 
             if (get_new_name(new_name))
             {
-                for (i = 0; i <= (*folder_count - *highlight - 1); i++)
-                    if ((*diffs)[*highlight + i + 1].number != (*diffs)[*highlight + i].number + 1)
-                        break;
-                number = (*diffs)[*highlight + i].number + 1;
-                if (number == 0)
-                    number == 99;
-                i += *highlight + 1;
-                for (int j = *folder_count; j > i; j--)
+                if (*folder_count == 0)
+                    number = 1;
+                else
                 {
-                    (*diffs)[j] = (*diffs)[j - 1];
-                }
+                    for (; i <= (*folder_count - *highlight - 1); i++)
+                        if ((*diffs)[*highlight + i + 1].number != (*diffs)[*highlight + i].number + 1)
+                            break;
+                    number = (*diffs)[*highlight + i].number + 1;
 
+                    if (number == 0)
+                        number == 99;
+                    i += *highlight + 1;
+                    for (int j = *folder_count; j > i; j--)
+                    {
+                        (*diffs)[j] = (*diffs)[j - 1];
+                    }
+                }
                 (*diffs)[i].index = -1;
                 (*diffs)[i].number = number;
+                (*diffs)[i].archive = false;
                 UpdateDiffName(diffs, &i, number, new_name);
-
                 (*folder_count)++;
             }
         }
