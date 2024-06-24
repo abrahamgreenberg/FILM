@@ -202,37 +202,4 @@ void file_manager_draw_loop(
     default:
         break;
     }
-
-    // switch (ch)
-
-    // case 'q':
-    // case 'Q':
-    //     if (*view == WRITE)
-    //         *view = EDIT;
-    //     else if (*view == EDIT)
-    //     {
-    //         *view = NAVIGATE;
-    //         if (*diffs != NULL)
-    //             free(*diffs);
-    //         DiffArrayConstructor(diffs, folders, *folder_count);
-    //     }
-    // (0);
-    //     }
-    //     break;
-
-    // /* EDIT MODE: CREATE / WRITE MODE: CONFIRM */
-    // 'c'
-    //     else if (*view == WRITE)
-    //     {
-    //         *view = NAVIGATE;
-    //         write_changes(current_path, folders, *diffs, *folder_count, message_string, message_string_length);
-    //         render_path[0] = '\0';
-    //     }
-    //     break;
-
-    // /*
-    //     break;
-    // /* HELP PAGES */
-
-    // }
 }
