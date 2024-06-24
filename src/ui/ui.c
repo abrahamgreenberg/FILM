@@ -95,8 +95,8 @@ void draw_ui(
     for (int i = (*start); i < folder_count; i++)
     {
         h = i == *highlight;
-        u = write ? (diffs[i].index == -1 || diffs[i].archive || strcmp(folders[diffs[i].index].folder_name, diffs[i].formatted_name) != 0) : 0;
-        y = diffs[i].archive;
+        u = write ? (!DiffHasAction(diffs[i], NAME) || strcmp(folders[diffs[i].index].folder_name, diffs[i].formatted_name) != 0) : 0;
+        y = DiffHasAction(diffs[i], ARCHIVE);
 
         if (h && !write)
             attron(A_STANDOUT);
@@ -108,7 +108,7 @@ void draw_ui(
         if (i == -1)
             mvprintw(j++, 0, "..");
         else
-            mvprintw(i + j, 0, "%s%s", diffs[i].archive ? "* " : "",
+            mvprintw(i + j, 0, "%s%s", DiffHasAction(diffs[i], ARCHIVE) ? "* " : "",
                      diffs[i].formatted_name);
 
         if (y)
@@ -302,7 +302,7 @@ void draw_loop(
                 }
                 (*diffs)[i].index = -1;
                 (*diffs)[i].number = number;
-                (*diffs)[i].archive = false;
+                ToggleDiffAction(&(*diffs)[i], CREATE);
                 UpdateDiffName(diffs, &i, number, new_name);
                 (*folder_count)++;
             }
@@ -323,10 +323,7 @@ void draw_loop(
         if (strcmp(diff.formatted_name, "[99] Archive") == 0)
             break;
 
-        if (!(*diffs)[*highlight].archive)
-            (*diffs)[*highlight].archive = true;
-        else
-            (*diffs)[*highlight].archive = false;
+        ToggleDiffAction(&(*diffs)[*highlight], ARCHIVE);
 
         break;
     /* EDIT MODE: NUMBERS -WORKS*/
@@ -334,7 +331,7 @@ void draw_loop(
         if (!(*edit) || (*write))
             break;
 
-        if (diff.archive || diff.number <= 1)
+        if (DiffHasAction(diff, ARCHIVE) || diff.number <= 1)
             break;
 
         diff.number--;
@@ -355,7 +352,7 @@ void draw_loop(
         if (!(*edit) || (*write))
             break;
 
-        if (diff.archive || diff.number >= 99)
+        if (DiffHasAction(diff, ARCHIVE) || diff.number >= 99)
             break;
 
         diff.number++;
@@ -380,7 +377,7 @@ void draw_loop(
         int j = 0;
         for (int i = 0; i < *folder_count; i++)
         {
-            if ((*diffs)[i].archive || strcmp((*diffs)[i].formatted_name, "[99] Archive") == 0)
+            if (DiffHasAction(diff, ARCHIVE) || strcmp((*diffs)[i].formatted_name, "[99] Archive") == 0)
                 continue;
             (*diffs)[i].number = j++;
             UpdateDiffName(diffs, &i, j, (*diffs)[i].name);

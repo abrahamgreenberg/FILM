@@ -11,6 +11,16 @@ void UpdateDiffName(Diff **diffs, int *index, int number, const char *name)
     FormatDiffName((*diffs)[*index].formatted_name, number, name);
 }
 
+bool DiffHasAction(Diff diff, DiffAction action)
+{
+    return (diff.action & action) == action;
+}
+
+void ToggleDiffAction(Diff *diff, DiffAction action)
+{
+    diff->action ^= action;
+}
+
 void DiffArrayConstructor(Diff **diffs, Folder *folders, size_t folders_size)
 {
     Diff *diffArray = (Diff *)malloc(MAX_FOLDERS * sizeof(Diff));
@@ -24,7 +34,8 @@ void DiffArrayConstructor(Diff **diffs, Folder *folders, size_t folders_size)
     {
         diffArray[i].index = i;
         diffArray[i].number = folders[i].number;
-        diffArray[i].archive = false;
+        // ToggleDiffAction(&diffArray[i], NAME);
+        diffArray[i].action = NAME;
         strcpy(diffArray[i].name, folders[i].name);
         strcpy(diffArray[i].formatted_name, folders[i].folder_name);
     }
