@@ -1,2 +1,2 @@
-file bin/file_manager
+file bin/file_manager_debug
 run
