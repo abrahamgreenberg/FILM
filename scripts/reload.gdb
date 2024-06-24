@@ -1,2 +1,2 @@
-file dist/a.out
+file bin/file_manager
 run

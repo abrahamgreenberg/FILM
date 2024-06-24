@@ -8,6 +8,7 @@
 #define MAX_FOLDERS 256
 #define STRING_LENGTH 512
 
-#define DEBUG_MODE 1
-
+#ifndef DEBUG_MODE
+#define DEBUG_MODE 0
+#endif
 #endif

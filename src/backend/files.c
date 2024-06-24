@@ -14,23 +14,39 @@ int path_level(const char *path)
     return count;
 }
 
+IsDirReturnType is_dir(const char *path)
+{
+    struct stat sb;
+    if (stat(path, &sb) == 0)
+        if (!S_ISDIR(sb.st_mode))
+            return NOT_A_DIR;
+        else
+            return EXISTS;
+    else
+        return DOES_NOT_EXIST;
+}
+
 void list_folders(const char *path, Folder *folders, int *folder_count, Diff **diffs)
 {
     DIR *d;
     struct dirent *dir;
-    char temp_folders[MAX_FOLDERS][OS_MAX_FILE_NAME_LENGTH];
     int temp_count = 0;
 
     short number;
     char name[MAX_FILE_NAME_LENGTH];
+    char file_path[OS_MAX_PATH_LENGTH];
 
     d = opendir(path);
     if (d)
     {
         while ((dir = readdir(d)) != NULL && temp_count < MAX_FOLDERS)
         {
-            if (dir->d_type != DT_DIR)
+            snprintf(file_path, sizeof(file_path), "%s/%s", path, dir->d_name);
+
+            IsDirReturnType isDir = is_dir(file_path);
+            if (isDir != EXISTS)
                 continue;
+
             if (strcmp(dir->d_name, ".") == 0 || strcmp(dir->d_name, "..") == 0)
                 continue;
             if (isValidFolderName(dir->d_name, &number, name))
@@ -45,17 +61,6 @@ void list_folders(const char *path, Folder *folders, int *folder_count, Diff **d
     *folder_count = temp_count;
 }
 
-IsDirReturnType is_dir(const char *path)
-{
-    struct stat sb;
-    if (stat(path, &sb) == 0)
-        if (!S_ISDIR(sb.st_mode))
-            return NOT_A_DIR;
-        else
-            return EXISTS;
-    return DOES_NOT_EXIST;
-}
-
 void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_t folders_count, char *message_string, int *message_string_length)
 {
     char original_path[MAX_PATH_LENGTH];
@@ -66,7 +71,7 @@ void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_
     message_string[0] = '\0';
     *message_string_length = 0;
 
-    for (int i = 0; i < folders_count; i++)
+    for (int i = 0; i < (int)folders_count; i++)
     {
         diff = diffs[i];
         if (!diff.archive)

@@ -20,7 +20,7 @@ void DiffArrayConstructor(Diff **diffs, Folder *folders, size_t folders_size)
         return;
     }
 
-    for (int i = 0; i < folders_size; i++)
+    for (int i = 0; i < (int)folders_size; i++)
     {
         diffArray[i].index = i;
         diffArray[i].number = folders[i].number;

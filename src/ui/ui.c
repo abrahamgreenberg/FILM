@@ -278,7 +278,6 @@ void draw_loop(
             if (*folder_count >= 100)
                 break;
             char new_name[MAX_FILE_NAME_LENGTH];
-            char formatted_new_name[OS_MAX_FILE_NAME_LENGTH];
             int number = 0;
             int i = 0;
 
@@ -294,7 +293,7 @@ void draw_loop(
                     number = (*diffs)[*highlight + i].number + 1;
 
                     if (number == 0)
-                        number == 99;
+                        number = 99;
                     i += *highlight + 1;
                     for (int j = *folder_count; j > i; j--)
                     {
