@@ -14,7 +14,7 @@
 
 /*
 
-MAKE A SETTINGS UI/SYSTEM:
+TODO: MAKE A SETTINGS UI/SYSTEM:
 - CUSTOM KEYBOARD SHORTCUTS
 - AUTO CREATE ARCHIVE FOLDER
 - MOVE FUNCTIONS TO CONTROLS.C
@@ -24,13 +24,6 @@ BUGFIX: MESSAGE IS SET MULTIPLE TIMES
 BUGFIX: LIMIT MESSAGE CHARACTERS
 BUGFIX: WHEN ARCHIVING A FOLDER THAT EXISTS IN THE ARCHIVE IT OVERIDES IT
 TODO: ABILITY TO BRING IN FOLDERS THAT DON'T FOLLOW THE SYSTEM?
-TODO: REPLACE WRITE AND EDIT WITH BOOLEAN OR MAKE IT AN ENUMr
-TODO: REPLACE DIFF WITH A POINTER SO
-(*DIFFS)[(HIGHLIGHT)] BECOMES *DIFF =
-
-AND DIFF. BECOME *DIFF.
-
-I THINK A BETTER COMPROMISE
 
  */
 
@@ -96,18 +89,23 @@ int main(int argc, char *argv[])
     Diff *diffs = NULL;
     View view = NAVIGATE;
 
+    if (DEBUG_MODE == 1)
+    {
+        view = SETTINGS;
+    }
+
     while (1)
     {
         if (view != SETTINGS)
             file_manager_draw_loop(current_path, render_path, &diffs, folders, &folder_count, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page);
         else
-            // mvprintw(0, 0, "hi");
-            settings_draw_loop(&view);
+            settings_draw_loop(&view, &settings, &highlight);
     }
 
     endwin();
     free(folders);
     if (diffs != NULL)
         free(diffs);
+    free_settings(&settings);
     return 0;
 }

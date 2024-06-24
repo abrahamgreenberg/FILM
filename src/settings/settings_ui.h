@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include "../main.h"
 #include "settings_controls.h"
+#include "settings.h"
 
-void settings_draw_loop(View *view);
+void settings_draw_loop(View *view, Settings *settings, int *highlight);
 #endif

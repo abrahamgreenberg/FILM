@@ -8,6 +8,7 @@
         "unistd.h": "c",
         "settings.h": "c",
         "stdlib.h": "c",
-        "diff.h": "c"
+        "diff.h": "c",
+        "opts.h": "c"
     }
 }

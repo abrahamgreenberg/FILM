@@ -6,6 +6,13 @@ void settings_controls(int ch, View *view)
     {
     case 'q':
     case 'Q':
-        *view = NAVIGATE;
+        if (DEBUG_MODE == 1)
+        {
+            endwin();
+            exit(0);
+        }
+        else
+            *view = NAVIGATE;
+        break;
     }
 }
