@@ -128,6 +128,7 @@ void file_manager_draw_loop(
     Diff **diffs,
     Folder *folders,
     int *folder_count,
+    Settings *settings,
     char *debug_string,
     int *debug_string_length,
     char *message_string,
@@ -197,7 +198,7 @@ void file_manager_draw_loop(
         edit_controls(ch, &(*diffs)[*highlight], diffs, highlight, folders, folder_count, view, debug_string, debug_string_length);
         break;
     case WRITE:
-        write_controls(ch, view, current_path, folders, *diffs, *folder_count, message_string, message_string_length, render_path);
+        write_controls(ch, view, current_path, folders, *diffs, *folder_count, message_string, message_string_length, render_path, settings);
         break;
     default:
         break;

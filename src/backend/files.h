@@ -3,6 +3,7 @@
 #include "folders.h"
 #include "diff.h"
 #include "../ui/controls.h"
+#include "../settings/settings.h"
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -16,7 +17,7 @@ typedef enum
 
 int path_level(const char *path);
 void list_folders(const char *path, Folder *folders, int *folder_count, Diff **diffs);
-void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_t folders_count, char *message_string, int *message_string_length);
+void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_t folders_count, char *message_string, int *message_string_length, Settings *settings);
 IsDirReturnType is_dir(const char *path);
 
 #endif

@@ -233,7 +233,7 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
     }
 }
 
-void write_controls(int ch, View *view, const char *current_path, Folder *folders, Diff *diffs, size_t folder_count, char *message_string, int *message_string_length, char *render_path)
+void write_controls(int ch, View *view, const char *current_path, Folder *folders, Diff *diffs, size_t folder_count, char *message_string, int *message_string_length, char *render_path, Settings *settings)
 {
     switch (ch)
     {
@@ -244,7 +244,7 @@ void write_controls(int ch, View *view, const char *current_path, Folder *folder
     case 'c':
     case 'C':
         *view = NAVIGATE;
-        write_changes(current_path, folders, diffs, folder_count, message_string, message_string_length);
+        write_changes(current_path, folders, diffs, folder_count, message_string, message_string_length, settings);
         render_path[0] = '\0';
         break;
     }

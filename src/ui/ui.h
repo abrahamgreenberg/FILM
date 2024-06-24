@@ -6,6 +6,7 @@
 #include "../backend/diff.h"
 #include "../backend/folders.h"
 #include "../backend/files.h"
+#include "../settings/settings.h"
 #include "controls.h"
 #include <ncurses.h>
 
@@ -15,6 +16,7 @@ void file_manager_draw_loop(
     Diff **diffs,
     Folder *folders,
     int *folder_count,
+    Settings *settings,
     char *debug_string,
     int *debug_string_length,
     char *message_string,

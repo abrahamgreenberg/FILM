@@ -6,13 +6,7 @@ void settings_controls(int ch, View *view, Settings *settings, int *highlight)
     {
     case 'q':
     case 'Q':
-        if (DEBUG_MODE == 1)
-        {
-            endwin();
-            exit(0);
-        }
-        else
-            *highlight = -1;
+        *highlight = -1;
         *view = NAVIGATE;
         break;
     case KEY_DOWN:
