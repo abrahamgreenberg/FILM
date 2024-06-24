@@ -8,9 +8,30 @@ void settings_draw_ui(Settings *settings, int highlight)
     mvprintw(j++, 0, "[Settings]");
     j += 2;
 
-    for (int i = 0; i < settings->count; i++)
+    char string_value[STRING_LENGTH];
+    bool h;
+
+    for (int i = 0; i < settings->count * 2; i += 2)
     {
-        mvprintw(j + i, 0, "%s", settings->settings[i].name);
+        h = highlight == i >> 1;
+
+        mvprintw(j + i, 0, "%s", settings->settings[i >> 1].name);
+
+        switch (settings->settings[i >> 1].type)
+        {
+        case BOOLEAN:
+            strcpy(string_value, settings->settings[i >> 1].value.boolValue == false ? "[ ]" : "[*]");
+            break;
+        case COLOUR:
+            strcpy(string_value, settings->settings[i >> 1].value.colourValue == 0 ? "Default" : "Broken");
+            break;
+        }
+
+        if (h)
+            attron(A_STANDOUT);
+        mvprintw(j + i + 1, 30, "%s", string_value);
+        if (h)
+            attroff(A_STANDOUT);
     }
 
     refresh();
@@ -23,5 +44,5 @@ void settings_draw_loop(View *view, Settings *settings, int *highlight)
     settings_draw_ui(settings, *highlight);
 
     int ch = getch();
-    settings_controls(ch, view);
+    settings_controls(ch, view, settings, highlight);
 }

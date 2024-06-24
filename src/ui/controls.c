@@ -93,6 +93,7 @@ void navigate_controls(int ch, int *highlight, char *current_path, char *render_
         break;
     case 's':
     case 'S':
+        *highlight = 0;
         *view = SETTINGS;
         break;
     case 'q':

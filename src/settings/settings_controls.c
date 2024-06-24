@@ -1,6 +1,6 @@
 #include "settings_controls.h"
 
-void settings_controls(int ch, View *view)
+void settings_controls(int ch, View *view, Settings *settings, int *highlight)
 {
     switch (ch)
     {
@@ -12,7 +12,20 @@ void settings_controls(int ch, View *view)
             exit(0);
         }
         else
-            *view = NAVIGATE;
+            *highlight = -1;
+        *view = NAVIGATE;
+        break;
+    case KEY_DOWN:
+    case 'k':
+    case 'K':
+        if (*highlight > 0)
+            (*highlight)--;
+        break;
+    case KEY_UP:
+    case 'j':
+    case 'J':
+        if (*highlight < settings->count - 1)
+            (*highlight)++;
         break;
     }
 }
