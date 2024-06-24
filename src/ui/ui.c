@@ -95,7 +95,7 @@ void draw_ui(
     for (int i = (*start); i < folder_count; i++)
     {
         h = i == *highlight;
-        u = write ? (diffs[i].index == -1 || diffs[i].archive || strcmp(folders[i].folder_name, diffs[i].formatted_name) != 0) : 0;
+        u = write ? (diffs[i].index == -1 || diffs[i].archive || strcmp(folders[diffs[i].index].folder_name, diffs[i].formatted_name) != 0) : 0;
         y = diffs[i].archive;
 
         if (h && !write)
