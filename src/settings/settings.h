@@ -17,7 +17,7 @@ typedef enum
 {
     DEFAULT_THEME,
     DRACULA_THEME,
-    FANCY_THEME,
+    AYU_MIRAGE_THEME,
     COLOUR_AMOUNT
 } ColourTheme;
 
@@ -46,6 +46,6 @@ typedef enum
 
 Setting createBooleanSetting(const char *name, bool value);
 Setting createColourSetting(const char *name, ColourTheme value);
-void initialise_settings(Settings *settings);
+void init_settings(Settings *settings);
 void free_settings(Settings *settings);
 #endif

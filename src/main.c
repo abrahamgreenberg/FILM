@@ -11,6 +11,7 @@
 #include "ui/ui.h"
 #include "settings/settings.h"
 #include "settings/settings_ui.h"
+#include "settings/colours.h"
 
 /*
 
@@ -44,16 +45,33 @@ int main(int argc, char *argv[])
     }
 
     Settings settings;
-    initialise_settings(&settings);
+    init_settings(&settings);
 
     start_color();
     use_default_colors();
 
-    init_pair(1, COLOR_MAGENTA, -1);
-    init_pair(2, COLOR_YELLOW, -1);
-    init_pair(3, COLOR_BLUE, -1);
-    init_pair(4, COLOR_CYAN, -1);
-    init_pair(5, COLOR_RED, -1);
+    init_colours();
+
+    ColourThemeColours *colourThemes;
+    init_colour_themes(&colourThemes);
+
+    // init_pair(1, COLOR_MAGENTA, -1);
+    // init_pair(2, COLOR_YELLOW, -1);
+    // init_pair(3, COLOR_BLUE, -1);
+    // init_pair(4, COLOR_CYAN, -1);
+    // init_pair(5, COLOR_RED, -1);
+
+    // Initialize custom colors
+    // init_custom_color(10, 0xff00ff); // Example custom color
+    // init_custom_color(11, 0xffff00); // Another custom color
+    // init_custom_color(11, 0x00ff00); // Another custom color
+
+    // Initialize color pairs using custom colors
+    // init_pair(1, COLOR_BLACK, 10); // Black text on custom background
+    // init_pair(2, 10, 11); // Custom text color on default background
+
+    // Set the background color for the entire window
+    // bkgd(COLOR_PAIR(2));
 
     Folder *folders = FolderArrayConstructor();
     if (folders == NULL)
@@ -101,7 +119,7 @@ int main(int argc, char *argv[])
         if (view != SETTINGS)
             file_manager_draw_loop(current_path, render_path, &diffs, folders, &folder_count, &settings, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page);
         else
-            settings_draw_loop(&view, &settings, &highlight);
+            settings_draw_loop(&view, &settings, &highlight, colourThemes);
     }
 
     endwin();

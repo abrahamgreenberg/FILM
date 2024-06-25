@@ -1,6 +1,6 @@
 #include "settings_ui.h"
 
-void settings_draw_ui(Settings *settings, int highlight)
+void settings_draw_ui(Settings *settings, int highlight, ColourThemeColours *colourThemes)
 {
     clear();
 
@@ -11,7 +11,7 @@ void settings_draw_ui(Settings *settings, int highlight)
     char string_value[STRING_LENGTH];
     bool h;
 
-    const char *ColourNames[] = {"Default", "Dracula", "Fancy"};
+    const char *ColourNames[] = {"Default", "Dracula", "Ayu Mirage"};
 
     for (int i = 0; i < settings->count * 2; i += 2)
     {
@@ -22,8 +22,11 @@ void settings_draw_ui(Settings *settings, int highlight)
         switch (settings->settings[i >> 1].type)
         {
         case BOOLEAN:
-            strcpy(string_value, settings->settings[i >> 1].value.boolValue == false ? "[ ]" : "[*]");
-            break;
+            bool b = settings->settings[i >> 1].value.boolValue;
+            if (b)
+                attron(get_colour())
+                    // strcpy(string_value,  == false ? "[ ]" : "[*]");
+                    break;
         case COLOUR:
             strcpy(string_value,
                    ColourNames[settings->settings[i >> 1].value.colourValue]);
@@ -40,12 +43,12 @@ void settings_draw_ui(Settings *settings, int highlight)
     refresh();
 }
 
-void settings_draw_loop(View *view, Settings *settings, int *highlight)
+void settings_draw_loop(View *view, Settings *settings, int *highlight, ColourThemeColours *colourThemes)
 {
     if (*highlight < 0)
         *highlight = 0;
-    settings_draw_ui(settings, *highlight);
+    settings_draw_ui(settings, *highlight, colourThemes);
 
     int ch = getch();
-    settings_controls(ch, view, settings, highlight);
+    settings_controls(ch, view, settings, highlight, colourThemes);
 }

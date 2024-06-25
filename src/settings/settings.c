@@ -1,6 +1,6 @@
 #include "settings.h"
 
-void initialise_setting_name(Setting *setting, const char *name)
+void init_setting_name(Setting *setting, const char *name)
 {
     setting->name = (char *)malloc(STRING_LENGTH * sizeof(char));
     if (setting->name == NULL)
@@ -14,7 +14,7 @@ void initialise_setting_name(Setting *setting, const char *name)
 Setting createBooleanSetting(const char *name, bool value)
 {
     Setting setting;
-    initialise_setting_name(&setting, name);
+    init_setting_name(&setting, name);
     setting.type = BOOLEAN;
     setting.value.boolValue = value;
     return setting;
@@ -23,13 +23,13 @@ Setting createBooleanSetting(const char *name, bool value)
 Setting createColourSetting(const char *name, ColourTheme value)
 {
     Setting setting;
-    initialise_setting_name(&setting, name);
+    init_setting_name(&setting, name);
     setting.type = COLOUR;
     setting.value.colourValue = value;
     return setting;
 }
 
-void initialise_settings(Settings *settings)
+void init_settings(Settings *settings)
 {
     settings->count = 2;
     settings->settings = (Setting *)malloc(settings->count * sizeof(Setting));

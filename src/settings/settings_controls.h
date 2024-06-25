@@ -3,8 +3,9 @@
 #include "../main.h"
 #include "../opts.h"
 #include "settings.h"
+#include "colours.h"
 #include <stdlib.h>
 #include <ncurses.h>
 
-void settings_controls(int ch, View *view, Settings *settings, int *highlight);
+void settings_controls(int ch, View *view, Settings *settings, int *highlight, ColourThemeColours *colourThemes);
 #endif

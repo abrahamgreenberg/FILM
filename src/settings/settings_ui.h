@@ -4,6 +4,7 @@
 #include "../main.h"
 #include "settings_controls.h"
 #include "settings.h"
+#include "colours.h"
 
-void settings_draw_loop(View *view, Settings *settings, int *highlight);
+void settings_draw_loop(View *view, Settings *settings, int *highlight, ColourThemeColours *colours);
 #endif
