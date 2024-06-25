@@ -48,9 +48,6 @@ int main(int argc, char *argv[])
 
     init_colours();
 
-    ColourThemeColours *colourThemes;
-    init_colour_themes(&colourThemes);
-
     Folder *folders = FolderArrayConstructor();
     if (folders == NULL)
         return 1;
@@ -96,14 +93,14 @@ int main(int argc, char *argv[])
         settings.settings[COLOUR_THEME].value.colourValue = 1;
     }
 
-    bkgd(get_colour(&settings, colourThemes, BACKGROUND));
+    bkgd(GET_COLOUR((&settings), BACKGROUND));
 
     while (1)
     {
         if (view != SETTINGS)
-            file_manager_draw_loop(current_path, render_path, &diffs, folders, &folder_count, &settings, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page, colourThemes);
+            file_manager_draw_loop(current_path, render_path, &diffs, folders, &folder_count, &settings, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page);
         else
-            settings_draw_loop(&view, &settings, &highlight, colourThemes);
+            settings_draw_loop(&view, &settings, &highlight);
     }
 
     endwin();

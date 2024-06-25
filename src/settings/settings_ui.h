@@ -6,5 +6,5 @@
 #include "settings.h"
 #include "colours.h"
 
-void settings_draw_loop(View *view, Settings *settings, int *highlight, ColourThemeColours *colours);
+void settings_draw_loop(View *view, Settings *settings, int *highlight);
 #endif

@@ -1,11 +1,11 @@
 #include "settings_ui.h"
 
-void settings_draw_ui(Settings *settings, int highlight, ColourThemeColours *colourThemes)
+void settings_draw_ui(Settings *settings, int highlight)
 {
     clear();
 
     int j = 0;
-    int c = get_colour(settings, colourThemes, YELLOW);
+    int c = GET_COLOUR(settings, YELLOW);
     attron(c);
     mvprintw(j++, 0, "[Settings]");
     attroff(c);
@@ -26,7 +26,7 @@ void settings_draw_ui(Settings *settings, int highlight, ColourThemeColours *col
         {
         case BOOLEAN:
             bool b = settings->settings[i >> 1].value.boolValue;
-            c = get_colour(settings, colourThemes, b ? BLUE : RED);
+            c = GET_COLOUR(settings, b ? BLUE : RED);
 
             strcpy(string_value, b ? "[*]" : "[ ]");
             break;
@@ -50,12 +50,12 @@ void settings_draw_ui(Settings *settings, int highlight, ColourThemeColours *col
     refresh();
 }
 
-void settings_draw_loop(View *view, Settings *settings, int *highlight, ColourThemeColours *colourThemes)
+void settings_draw_loop(View *view, Settings *settings, int *highlight)
 {
     if (*highlight < 0)
         *highlight = 0;
-    settings_draw_ui(settings, *highlight, colourThemes);
+    settings_draw_ui(settings, *highlight);
 
     int ch = getch();
-    settings_controls(ch, view, settings, highlight, colourThemes);
+    settings_controls(ch, view, settings, highlight);
 }

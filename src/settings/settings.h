@@ -9,17 +9,16 @@
 
 typedef enum
 {
-    BOOLEAN,
-    COLOUR
-} SettingType;
-
-typedef enum
-{
     DEFAULT_THEME,
     DRACULA_THEME,
     AYU_MIRAGE_THEME,
     COLOUR_AMOUNT
 } ColourTheme;
+typedef enum
+{
+    BOOLEAN,
+    COLOUR
+} SettingType;
 
 typedef struct
 {

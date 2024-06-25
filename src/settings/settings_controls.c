@@ -1,6 +1,6 @@
 #include "settings_controls.h"
 
-void settings_controls(int ch, View *view, Settings *settings, int *highlight, ColourThemeColours *colourThemes)
+void settings_controls(int ch, View *view, Settings *settings, int *highlight)
 {
     switch (ch)
     {
@@ -27,7 +27,7 @@ void settings_controls(int ch, View *view, Settings *settings, int *highlight, C
         else if (settings->settings[*highlight].type == COLOUR)
         {
             settings->settings[*highlight].value.colourValue = (settings->settings[*highlight].value.colourValue + 1) % COLOUR_AMOUNT;
-            bkgd(get_colour(settings, colourThemes, BACKGROUND));
+            bkgd(GET_COLOUR(settings, BACKGROUND));
         }
         break;
     }

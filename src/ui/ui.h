@@ -26,7 +26,6 @@ void file_manager_draw_loop(
     int max_level,
     int *highlight,
     View *view,
-    int *help_page,
-    ColourThemeColours *colourThemes);
+    int *help_page);
 
 #endif

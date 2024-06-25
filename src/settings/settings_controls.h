@@ -7,5 +7,5 @@
 #include <stdlib.h>
 #include <ncurses.h>
 
-void settings_controls(int ch, View *view, Settings *settings, int *highlight, ColourThemeColours *colourThemes);
+void settings_controls(int ch, View *view, Settings *settings, int *highlight);
 #endif

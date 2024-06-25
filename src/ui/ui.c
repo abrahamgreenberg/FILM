@@ -16,7 +16,7 @@ void truncate_string_from_position(const char *source, char *destination, size_t
 
 void draw_ui(
     Diff *diffs, Folder *folders, int folder_count,
-    const char *current_path, const char *debug, const char *message, int message_string_length, int *highlight, int max_level, int *start, View view, int help_page, Settings *settings, ColourThemeColours *colourThemes
+    const char *current_path, const char *debug, const char *message, int message_string_length, int *highlight, int max_level, int *start, View view, int help_page, Settings *settings
 
 )
 {
@@ -26,12 +26,11 @@ void draw_ui(
     int col1 = 0;
     int col2 = 0;
     int col3 = 0;
-    ColourFunction get_col = get_colour_factory(settings, colourThemes);
 
     if (DEBUG_MODE == 1)
     {
         attron(A_DIM);
-        col1 = get_col(YELLOW);
+        col1 = GET_COLOUR(settings, YELLOW);
         attron(col1);
         mvprintw(j++, 0, "Debug: %s", debug);
         attroff(col1);
@@ -46,7 +45,7 @@ void draw_ui(
     {
     case NAVIGATE:
         strcpy(status_string, "[Navigation mode]");
-        col1 = get_col(CYAN);
+        col1 = GET_COLOUR(settings, CYAN);
 
         if (help_page == 0)
             strcpy(help_msg, "Controls (1/2): [2] Page 2. [Q] Quit. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
@@ -55,7 +54,7 @@ void draw_ui(
         break;
     case EDIT:
         strcpy(status_string, "[Edit mode]");
-        col1 = get_col(BLUE);
+        col1 = GET_COLOUR(settings, BLUE);
 
         if (help_page == 0)
             strcpy(help_msg, "Controls (1/5): [1] Page 1. [2] Page 2. [3] Page 3. [4] Page 4. [5] Page 5. ");
@@ -70,7 +69,7 @@ void draw_ui(
         break;
     case WRITE:
         strcpy(status_string, "[Write mode]");
-        col1 = get_col(MAGENTA);
+        col1 = GET_COLOUR(settings, MAGENTA);
         strcpy(help_msg, "Controls: [Q] Edit mode. [C] Confirm.");
         break;
     default:
@@ -86,7 +85,7 @@ void draw_ui(
 
     if (message_string_length > 0)
     {
-        col1 = get_col(GREEN);
+        col1 = GET_COLOUR(settings, GREEN);
         mvprintw(j + 1, 0, "%s", message);
     }
 
@@ -104,9 +103,9 @@ void draw_ui(
     int u = 0;
     int y = 0;
 
-    col1 = get_col(BLUE);
-    col2 = get_col(CYAN);
-    col3 = get_col(YELLOW);
+    col1 = GET_COLOUR(settings, CYAN);
+    col2 = GET_COLOUR(settings, CYAN);
+    col3 = GET_COLOUR(settings, YELLOW);
 
     for (int i = (*start); i < folder_count; i++)
     {
@@ -165,10 +164,7 @@ void file_manager_draw_loop(
     int max_level,
     int *highlight,
     View *view,
-    int *help_page,
-    ColourThemeColours *colourThemes
-
-)
+    int *help_page)
 {
     if (strcmp(render_path, current_path) != 0)
     {
@@ -178,7 +174,7 @@ void file_manager_draw_loop(
         list_folders(current_path, folders, folder_count, diffs);
     }
     strcpy(render_path, current_path);
-    draw_ui(*diffs, folders, *folder_count, current_path, debug_string, message_string, *message_string_length, highlight, max_level, start, *view, *help_page, settings, colourThemes);
+    draw_ui(*diffs, folders, *folder_count, current_path, debug_string, message_string, *message_string_length, highlight, max_level, start, *view, *help_page, settings);
 
     debug_string[0] = '\0';
     *debug_string_length = 0;
