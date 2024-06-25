@@ -225,7 +225,7 @@ void file_manager_draw_loop(
         edit_controls(ch, &(*diffs)[*highlight], diffs, highlight, folders, folder_count, view, debug_string, debug_string_length);
         break;
     case WRITE:
-        write_controls(ch, view, current_path, folders, *diffs, *folder_count, message_string, message_string_length, render_path, settings);
+        write_controls(ch, view, current_path, folders, *diffs, *folder_count, message_string, message_string_length, render_path, settings, highlight);
         break;
     default:
         break;

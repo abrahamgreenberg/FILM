@@ -163,17 +163,17 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
                         break;
                 number = (*diffs)[*highlight + i].number + 1;
 
-                if (number == 0)
-                    number = 99;
+                if (number == 100)
+                    number = 1;
                 i += *highlight + 1;
-                for (int j = *folder_count; j > i; j--)
+                for (int j = *folder_count; j >= i; j--)
                 {
                     (*diffs)[j] = (*diffs)[j - 1];
                 }
             }
             (*diffs)[i].index = -1;
             (*diffs)[i].number = number;
-            ToggleDiffAction(&(*diffs)[i], CREATE);
+            (*diffs)[i].action = CREATE;
             UpdateDiffName(diffs, &i, number, new_name);
             (*folder_count)++;
         }
@@ -233,7 +233,7 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
     }
 }
 
-void write_controls(int ch, View *view, const char *current_path, Folder *folders, Diff *diffs, size_t folder_count, char *message_string, int *message_string_length, char *render_path, Settings *settings)
+void write_controls(int ch, View *view, const char *current_path, Folder *folders, Diff *diffs, size_t folder_count, char *message_string, int *message_string_length, char *render_path, Settings *settings, int *highlight)
 {
     switch (ch)
     {
@@ -246,6 +246,7 @@ void write_controls(int ch, View *view, const char *current_path, Folder *folder
         *view = NAVIGATE;
         write_changes(current_path, folders, diffs, folder_count, message_string, message_string_length, settings);
         render_path[0] = '\0';
+        *highlight = -1;
         break;
     }
 }
