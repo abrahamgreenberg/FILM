@@ -5,7 +5,10 @@ void settings_draw_ui(Settings *settings, int highlight, ColourThemeColours *col
     clear();
 
     int j = 0;
+    int c = get_colour(settings, colourThemes, YELLOW);
+    attron(c);
     mvprintw(j++, 0, "[Settings]");
+    attroff(c);
     j += 2;
 
     char string_value[STRING_LENGTH];
@@ -15,18 +18,18 @@ void settings_draw_ui(Settings *settings, int highlight, ColourThemeColours *col
 
     for (int i = 0; i < settings->count * 2; i += 2)
     {
-        h = highlight == i >> 1;
-
         mvprintw(j + i, 0, "%s", settings->settings[i >> 1].name);
 
+        h = highlight == i >> 1;
+        c = 0;
         switch (settings->settings[i >> 1].type)
         {
         case BOOLEAN:
             bool b = settings->settings[i >> 1].value.boolValue;
-            if (b)
-                attron(get_colour())
-                    // strcpy(string_value,  == false ? "[ ]" : "[*]");
-                    break;
+            c = get_colour(settings, colourThemes, b ? BLUE : RED);
+
+            strcpy(string_value, b ? "[*]" : "[ ]");
+            break;
         case COLOUR:
             strcpy(string_value,
                    ColourNames[settings->settings[i >> 1].value.colourValue]);
@@ -35,7 +38,11 @@ void settings_draw_ui(Settings *settings, int highlight, ColourThemeColours *col
 
         if (h)
             attron(A_STANDOUT);
+        if (c != 0)
+            attron(c);
         mvprintw(j + i + 1, 30, "%s", string_value);
+        if (c != 0)
+            attroff(c);
         if (h)
             attroff(A_STANDOUT);
     }

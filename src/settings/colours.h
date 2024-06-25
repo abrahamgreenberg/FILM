@@ -32,27 +32,20 @@ typedef enum
 void init_custom_color(short color_number, int hex_value);
 void init_colours();
 
-typedef struct
-{
-    ColourIndexes Background;
-    ColourIndexes Red;
-    ColourIndexes Blue;
-    ColourIndexes Cyan;
-    ColourIndexes Yellow;
-    ColourIndexes Magenta;
-} ColourThemeColours;
-
 typedef enum
 {
-    Background,
-    Red,
-    Blue,
-    Cyan,
-    Yellow,
-    Magenta
+    BACKGROUND,
+    RED,
+    BLUE,
+    CYAN,
+    YELLOW,
+    MAGENTA,
+    COLOUR_THEME_INDEX_AMOUNT
 } ColourThemeIndex;
 
+typedef ColourIndexes ColourThemeColours[COLOUR_THEME_INDEX_AMOUNT];
+
 void init_colour_themes(ColourThemeColours **colourThemes);
-int get_colour(Settings *settings, ColourThemeColours *colourThemes, ColourThemeIndex);
+int get_colour(Settings *settings, ColourThemeColours *colourThemes, ColourThemeIndex index);
 
 #endif
