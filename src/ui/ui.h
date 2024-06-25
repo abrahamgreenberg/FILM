@@ -7,6 +7,7 @@
 #include "../backend/folders.h"
 #include "../backend/files.h"
 #include "../settings/settings.h"
+#include "../settings/colours.h"
 #include "controls.h"
 #include <ncurses.h>
 
@@ -25,6 +26,7 @@ void file_manager_draw_loop(
     int max_level,
     int *highlight,
     View *view,
-    int *help_page);
+    int *help_page,
+    ColourThemeColours *colourThemes);
 
 #endif

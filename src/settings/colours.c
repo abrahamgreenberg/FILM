@@ -97,3 +97,15 @@ int get_colour(Settings *settings, ColourThemeColours *colourThemes, ColourTheme
 {
     return COLOR_PAIR(colourThemes[settings->settings[COLOUR_THEME].value.colourValue][index]);
 }
+
+ColourFunction get_colour_factory(Settings *settings, ColourThemeColours *colourThemes)
+{
+    ColourThemeColours *colours = &colourThemes[settings->settings[COLOUR_THEME].value.colourValue];
+
+    int get_colour_f(ColourThemeIndex index)
+    {
+        return COLOR_PAIR((*colours)[index]);
+    }
+
+    return get_colour_f;
+}

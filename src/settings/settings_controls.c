@@ -1,11 +1,5 @@
 #include "settings_controls.h"
 
-// void update_colours(int index, ColourThemeColours *colourThemes)
-// {
-//     // int t = colourThemes[index].Background;
-//     bkgd(COLOR_PAIR(colourThemes[index].Background));
-// }
-
 void settings_controls(int ch, View *view, Settings *settings, int *highlight, ColourThemeColours *colourThemes)
 {
     switch (ch)

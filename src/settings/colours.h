@@ -48,4 +48,7 @@ typedef ColourIndexes ColourThemeColours[COLOUR_THEME_INDEX_AMOUNT];
 void init_colour_themes(ColourThemeColours **colourThemes);
 int get_colour(Settings *settings, ColourThemeColours *colourThemes, ColourThemeIndex index);
 
+typedef int (*ColourFunction)(ColourThemeIndex);
+ColourFunction get_colour_factory(Settings *settings, ColourThemeColours *colourThemes);
+
 #endif
