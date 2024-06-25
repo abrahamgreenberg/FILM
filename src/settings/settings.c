@@ -40,7 +40,7 @@ void init_settings(Settings *settings)
         exit(1);
     }
 
-    settings->settings[CREATE_ARCHIVE] = createBooleanSetting("Create archive", true);
+    settings->settings[CREATE_ARCHIVE] = createBooleanSetting("Create archive", false);
     settings->settings[COLOUR_THEME] = createColourSetting("Colour Theme", DEFAULT_THEME);
 }
 

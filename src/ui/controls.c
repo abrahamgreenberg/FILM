@@ -156,6 +156,18 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
         {
             if (*folder_count == 0)
                 number = 1;
+            else if (*folder_count == 1)
+                if ((*diffs)[0].number == 99)
+                {
+                    number = 1;
+                    (*diffs)[1] = (*diffs)[0];
+                    i = 0;
+                }
+                else
+                {
+                    number = (*diffs)[0].number + 1;
+                    i = 1;
+                }
             else
             {
                 for (; i <= (*folder_count - *highlight - 1); i++)
@@ -164,7 +176,7 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
                 number = (*diffs)[*highlight + i].number + 1;
 
                 if (number == 100)
-                    number = 1;
+                    number = 99;
                 i += *highlight + 1;
                 for (int j = *folder_count; j >= i; j--)
                 {
