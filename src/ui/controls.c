@@ -2,7 +2,7 @@
 
 void append_str(char *string, int *string_length, const char *append_string)
 {
-    strcat(string, append_string);
+    strncat(string, append_string, STRING_LENGTH);
     *string_length += strlen(append_string);
 }
 
@@ -15,7 +15,7 @@ void append_frmt(char *string, int *string_length, const char *format, ...)
     vsnprintf(temp_buffer, sizeof(temp_buffer), format, args);
     va_end(args);
 
-    strcat(string, temp_buffer);
+    strncat(string, temp_buffer, STRING_LENGTH);
 
     *string_length += strlen(temp_buffer);
 }

@@ -125,6 +125,6 @@ void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_
             if (rename(original_path, new_path))
                 append_frmt(message_string, message_string_length, "(Failed to rename %s to %s) ", folder.folder_name, diff.formatted_name);
         }
-        append_str(message_string, message_string_length, "Done!");
     }
+    append_str(message_string, message_string_length, "Done!");
 }

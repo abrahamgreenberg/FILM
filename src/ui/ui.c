@@ -83,14 +83,16 @@ void draw_ui(
     mvprintw(j++, 0, "Current folder: %s", current_path);
 
     mvprintw(++j, 0, "%s", help_msg);
-    j += 2;
+
+    if (message_string_length > 0)
+    {
+        col1 = get_col(GREEN);
+        mvprintw(j + 1, 0, "%s", message);
+    }
+
+    j += 3;
 
     // TODO: FIX THE MESSAGE
-    // if (message_string_length > 0)
-    // {
-    //     mvprintw(j + 1, 0, "%s", message);
-    //     j += 2;
-    // }
 
     *start = path_level(current_path) == max_level && !DEBUG_MODE ? 0 : -1;
     if (view != NAVIGATE)
