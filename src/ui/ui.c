@@ -86,7 +86,9 @@ void draw_ui(
     if (message_string_length > 0)
     {
         col1 = GET_COLOUR(settings, GREEN);
+        attron(col1);
         mvprintw(j + 1, 0, "%s", message);
+        attroff(col1);
     }
 
     j += 3;

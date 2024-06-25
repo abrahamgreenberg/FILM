@@ -8,9 +8,10 @@
         INIT_COLOUR(THEME, RED, HEX_CODES[1]);        \
         INIT_COLOUR(THEME, BLUE, HEX_CODES[2]);       \
         INIT_COLOUR(THEME, CYAN, HEX_CODES[3]);       \
-        INIT_COLOUR(THEME, YELLOW, HEX_CODES[4]);     \
-        INIT_COLOUR(THEME, MAGENTA, HEX_CODES[5]);    \
-        INIT_COLOUR(THEME, TEXT, HEX_CODES[6]);       \
+        INIT_COLOUR(THEME, GREEN, HEX_CODES[4]);      \
+        INIT_COLOUR(THEME, YELLOW, HEX_CODES[5]);     \
+        INIT_COLOUR(THEME, MAGENTA, HEX_CODES[6]);    \
+        INIT_COLOUR(THEME, TEXT, HEX_CODES[7]);       \
     } while (0)
 
 #define INIT_COLOUR_PAIR(T, I, C) (init_pair(COLOUR_INDEX(T, I), COLOUR_NCURSES_INDEX(T, C), COLOUR_NCURSES_INDEX(T, BACKGROUND)))
@@ -21,6 +22,7 @@
         INIT_COLOUR_PAIR(THEME, RED, RED);         \
         INIT_COLOUR_PAIR(THEME, BLUE, BLUE);       \
         INIT_COLOUR_PAIR(THEME, CYAN, CYAN);       \
+        INIT_COLOUR_PAIR(THEME, GREEN, GREEN);     \
         INIT_COLOUR_PAIR(THEME, YELLOW, YELLOW);   \
         INIT_COLOUR_PAIR(THEME, MAGENTA, MAGENTA); \
     } while (0)
@@ -40,10 +42,10 @@ void init_custom_color(short color_number, int hex_value)
 
 void init_colours()
 {
-    //    BACKGROUND, RED, BLUE, CYAN, YELLOW, MAGENTA, TEXT
-    int default_theme_colors[] = {0x000000, 0xFF0000, 0x0000FF, 0x00FFFF, 0xFFFF00, 0xFF00FF, 0xffffff};
-    int dracula_theme_colors[] = {0x282A36, 0xFF5555, 0x6272A4, 0x8BE9FD, 0xF1FA8C, 0xFF79C6, 0xf8f8f2};
-    int ayu_mirage_theme_colors[] = {0x1F2430, 0xF07178, 0x39BAE6, 0x95E6CB, 0xFFD580, 0xE6B673, 0xcbccc6};
+    //    BACKGROUND, RED, BLUE, CYAN, GREEN, YELLOW, MAGENTA, TEXT
+    int default_theme_colors[] = {0x000000, 0xFF0000, 0x0000FF, 0x00FFFF, 0x00FF00, 0xFFFF00, 0xFF00FF, 0xffffff};
+    int dracula_theme_colors[] = {0x282A36, 0xFF5555, 0x6272A4, 0x8BE9FD, 0x50FA7B, 0xF1FA8C, 0xFF79C6, 0xf8f8f2};
+    int ayu_mirage_theme_colors[] = {0x1F2430, 0xF07178, 0x39BAE6, 0x95E6CB, 0x87D96C, 0xFFD580, 0xE6B673, 0xcbccc6};
 
     INIT_THEME(DEFAULT_THEME, default_theme_colors);
     INIT_THEME(DRACULA_THEME, dracula_theme_colors);
