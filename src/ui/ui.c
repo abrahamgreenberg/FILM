@@ -1,5 +1,7 @@
 #include "ui.h"
 
+#define SET_HELP_MSG(S) (strcpy(help_msg, S))
+
 void truncate_string_from_position(const char *source, char *destination, size_t start_position, size_t new_length)
 {
     size_t source_length = strlen(source);
@@ -48,29 +50,30 @@ void draw_ui(
         col1 = GET_COLOUR(settings, CYAN);
 
         if (help_page == 0)
-            strcpy(help_msg, "Controls (1/2): [2] Page 2. [Q] Quit. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
+            // strcpy(help_msg, "Controls (1/2): [2] Page 2. [Q] Quit. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
+            SET_HELP_MSG("Controls (1/2): [2] Page 2. [Q] Quit. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
         else
-            strcpy(help_msg, "Controls (2/2): [1] Page 1. [Enter] Navigate. [E] Edit mode. [R] Refresh files.");
+            SET_HELP_MSG("Controls (2/2): [1] Page 1. [Enter] Navigate. [E] Edit mode. [R] Refresh files.");
         break;
     case EDIT:
         strcpy(status_string, "[Edit mode]");
         col1 = GET_COLOUR(settings, BLUE);
 
         if (help_page == 0)
-            strcpy(help_msg, "Controls (1/5): [1] Page 1. [2] Page 2. [3] Page 3. [4] Page 4. [5] Page 5. ");
+            SET_HELP_MSG("Controls (1/5): [1] Page 1. [2] Page 2. [3] Page 3. [4] Page 4. [5] Page 5. ");
         else if (help_page == 1)
-            strcpy(help_msg, "Controls (2/5): [Q] Navigation mode. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
+            SET_HELP_MSG("Controls (2/5): [Q] Navigation mode. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
         else if (help_page == 2)
-            strcpy(help_msg, "Controls (3/5): [U] Move up. [D] Move Down. [C] Create folder. [R] Rename folder.");
+            SET_HELP_MSG("Controls (3/5): [U] Move up. [D] Move Down. [C] Create folder. [R] Rename folder.");
         else if (help_page == 3)
-            strcpy(help_msg, "Controls (4/5):  [A] Archive folder. [-] Decrement number. [=] Increment number.");
+            SET_HELP_MSG("Controls (4/5):  [A] Archive folder. [-] Decrement number. [=] Increment number.");
         else
-            strcpy(help_msg, "Controls (5/5): [F] Fix numbering. [W] Write changes.");
+            SET_HELP_MSG("Controls (5/5): [F] Fix numbering. [W] Write changes.");
         break;
     case WRITE:
         strcpy(status_string, "[Write mode]");
         col1 = GET_COLOUR(settings, MAGENTA);
-        strcpy(help_msg, "Controls: [Q] Edit mode. [C] Confirm.");
+        SET_HELP_MSG("Controls: [Q] Edit mode. [C] Confirm.");
         break;
     default:
         break;

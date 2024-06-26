@@ -1,5 +1,18 @@
 #include "colours.h"
 
+#define INIT_COLOUR_PAIR(T, I, C) (init_pair(COLOUR_INDEX(T, I), COLOUR_NCURSES_INDEX(T, C), COLOUR_NCURSES_INDEX(T, BACKGROUND)))
+#define INIT_THEME_COLOUR_PAIRS(THEME)             \
+    do                                             \
+    {                                              \
+        INIT_COLOUR_PAIR(THEME, BACKGROUND, TEXT); \
+        INIT_COLOUR_PAIR(THEME, RED, RED);         \
+        INIT_COLOUR_PAIR(THEME, BLUE, BLUE);       \
+        INIT_COLOUR_PAIR(THEME, CYAN, CYAN);       \
+        INIT_COLOUR_PAIR(THEME, GREEN, GREEN);     \
+        INIT_COLOUR_PAIR(THEME, YELLOW, YELLOW);   \
+        INIT_COLOUR_PAIR(THEME, MAGENTA, MAGENTA); \
+    } while (0)
+
 #define INIT_COLOUR(T, C, H) (init_custom_color(COLOUR_NCURSES_INDEX(T, C), H))
 #define INIT_THEME(THEME, HEX_CODES)                  \
     do                                                \
@@ -12,19 +25,7 @@
         INIT_COLOUR(THEME, YELLOW, HEX_CODES[5]);     \
         INIT_COLOUR(THEME, MAGENTA, HEX_CODES[6]);    \
         INIT_COLOUR(THEME, TEXT, HEX_CODES[7]);       \
-    } while (0)
-
-#define INIT_COLOUR_PAIR(T, I, C) (init_pair(COLOUR_INDEX(T, I), COLOUR_NCURSES_INDEX(T, C), COLOUR_NCURSES_INDEX(T, BACKGROUND)))
-#define INIT_THEME_COLOUR_PAIRS(THEME)             \
-    do                                             \
-    {                                              \
-        INIT_COLOUR_PAIR(THEME, BACKGROUND, TEXT); \
-        INIT_COLOUR_PAIR(THEME, RED, RED);         \
-        INIT_COLOUR_PAIR(THEME, BLUE, BLUE);       \
-        INIT_COLOUR_PAIR(THEME, CYAN, CYAN);       \
-        INIT_COLOUR_PAIR(THEME, GREEN, GREEN);     \
-        INIT_COLOUR_PAIR(THEME, YELLOW, YELLOW);   \
-        INIT_COLOUR_PAIR(THEME, MAGENTA, MAGENTA); \
+        INIT_THEME_COLOUR_PAIRS(THEME);               \
     } while (0)
 
 void init_custom_color(short color_number, int hex_value)
@@ -50,8 +51,4 @@ void init_colours()
     INIT_THEME(DEFAULT_THEME, default_theme_colors);
     INIT_THEME(DRACULA_THEME, dracula_theme_colors);
     INIT_THEME(AYU_MIRAGE_THEME, ayu_mirage_theme_colors);
-
-    INIT_THEME_COLOUR_PAIRS(DEFAULT_THEME);
-    INIT_THEME_COLOUR_PAIRS(DRACULA_THEME);
-    INIT_THEME_COLOUR_PAIRS(AYU_MIRAGE_THEME);
 }
