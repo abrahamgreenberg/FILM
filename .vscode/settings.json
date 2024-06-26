@@ -9,6 +9,7 @@
         "settings.h": "c",
         "stdlib.h": "c",
         "diff.h": "c",
-        "opts.h": "c"
+        "opts.h": "c",
+        "colours.h": "c"
     }
 }

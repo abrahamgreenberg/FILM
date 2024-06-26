@@ -109,7 +109,8 @@ void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_
                 snprintf(original_path, sizeof(new_path), "%s/%s", current_path, folder.folder_name);
                 snprintf(new_path, sizeof(new_path), "%s/[99] Archive/%s", current_path, diff.name);
 
-                if (rename(original_path, new_path))
+                isDir = is_dir(new_path);
+                if (isDir != DOES_NOT_EXIST || rename(original_path, new_path))
                     append_frmt(message_string, message_string_length, "(Failed to archive %s) ", diff.formatted_name);
             }
         }
