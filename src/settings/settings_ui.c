@@ -26,7 +26,7 @@ void settings_draw_ui(Settings *settings, int highlight)
         {
         case BOOLEAN:
             bool b = settings->settings[i >> 1].value.boolValue;
-            c = GET_COLOUR(settings, b ? BLUE : RED);
+            c = GET_COLOUR(settings, b ? MAGENTA : GREEN);
 
             strcpy(string_value, b ? "[*]" : "[ ]");
             break;

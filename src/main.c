@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         strcpy(current_path, "/home/abigreenberg/Documents/[01] Tech/[01] Programming/[02] c/file_manager/[01] test");
         view = EDIT;
         highlight = 4;
-        settings.settings[COLOUR_THEME].value.colourValue = 1;
+        // settings.settings[COLOUR_THEME].value.colourValue = 1;
     }
 
     bkgd(GET_COLOUR((&settings), BACKGROUND));
