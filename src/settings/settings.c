@@ -29,9 +29,18 @@ Setting createColourSetting(const char *name, ColourTheme value)
     return setting;
 }
 
+Setting createShortcutSettings(const char *name, ColourTheme value)
+{
+    Setting setting;
+    init_setting_name(&setting, name);
+    setting.type = SHORTCUT;
+    setting.value.charValue = value;
+    return setting;
+}
+
 void init_settings(Settings *settings)
 {
-    settings->count = 2;
+    settings->count = SETTINGS_COUNT;
     settings->settings = (Setting *)malloc(settings->count * sizeof(Setting));
 
     if (settings->settings == NULL)
@@ -40,8 +49,9 @@ void init_settings(Settings *settings)
         exit(1);
     }
 
-    settings->settings[CREATE_ARCHIVE] = createBooleanSetting("Create archive", false);
-    settings->settings[COLOUR_THEME] = createColourSetting("Colour Theme", DEFAULT_THEME);
+    GET_SETTING(CREATE_ARCHIVE) = createBooleanSetting("Create archive", false);
+    GET_SETTING(COLOUR_THEME) = createColourSetting("Colour Theme", DEFAULT_THEME);
+    GET_SETTING(EXIT_KEY) = createShortcutSettings("Exit key", 'q');
 }
 
 void free_settings(Settings *settings)
@@ -50,7 +60,7 @@ void free_settings(Settings *settings)
     {
         for (int i = 0; i < settings->count; ++i)
         {
-            free(settings->settings[i].name);
+            free(GET_SETTING(i).name);
         }
         free(settings->settings);
     }

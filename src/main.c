@@ -15,8 +15,8 @@
 
 /*
 TODO: MAKE A SETTINGS UI/SYSTEM:
-- SAVE SETTINGS
 - CUSTOM KEYBOARD SHORTCUTS
+- SAVE SETTINGS
 
 TODO: ABILITY TO BRING IN FOLDERS THAT DON'T FOLLOW THE SYSTEM?
 
@@ -83,9 +83,10 @@ int main(int argc, char *argv[])
     if (DEBUG_MODE == 1)
     {
         // view = NAVIAGE;
-        strcpy(current_path, "/home/abigreenberg/Documents/[01] Tech/[01] Programming/[02] c/file_manager/[01] test");
-        view = EDIT;
-        highlight = 4;
+        // strcpy(current_path, "/home/abigreenberg/Documents/[01] Tech/[01] Programming/[02] c/file_manager/[01] test");
+        view = SETTINGS;
+        highlight = 2;
+        // highlight = 4;
         // settings.settings[COLOUR_THEME].value.colourValue = 1;
     }
 

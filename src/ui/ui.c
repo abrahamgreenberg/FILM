@@ -222,7 +222,7 @@ void file_manager_draw_loop(
     switch (*view)
     {
     case NAVIGATE:
-        navigate_controls(ch, highlight, current_path, render_path, folders, view);
+        navigate_controls(ch, highlight, current_path, render_path, folders, view, settings);
         break;
     case EDIT:
         edit_controls(ch, &(*diffs)[*highlight], diffs, highlight, folders, folder_count, view, debug_string, debug_string_length);

@@ -1,5 +1,10 @@
 #include "settings_ui.h"
 
+#define RENDER_KEY(I, S) \
+    case I:              \
+        strcpy(str, S);  \
+        break;
+
 void settings_draw_ui(Settings *settings, int highlight)
 {
     clear();
@@ -18,22 +23,35 @@ void settings_draw_ui(Settings *settings, int highlight)
 
     for (int i = 0; i < settings->count * 2; i += 2)
     {
-        mvprintw(j + i, 0, "%s", settings->settings[i >> 1].name);
+        mvprintw(j + i, 0, "%s", GET_SETTING(i / 2).name);
 
         h = highlight == i >> 1;
         c = 0;
-        switch (settings->settings[i >> 1].type)
+        switch (GET_SETTING(i / 2).type)
         {
         case BOOLEAN:
-            bool b = settings->settings[i >> 1].value.boolValue;
+            bool b = GET_SETTING_VALUE(i / 2).boolValue;
             c = GET_COLOUR(settings, b ? MAGENTA : GREEN);
 
             strcpy(string_value, b ? "[*]" : "[ ]");
             break;
         case COLOUR:
             strcpy(string_value,
-                   ColourNames[settings->settings[i >> 1].value.colourValue]);
+                   ColourNames[GET_SETTING_VALUE(i / 2).colourValue]);
             break;
+        case SHORTCUT:
+            char str[8], v;
+            switch (v = GET_SETTING_VALUE(i / 2).charValue)
+            {
+                RENDER_KEY(27, "Escape")
+                RENDER_KEY(32, "Space")
+                RENDER_KEY(9, "Tab")
+            default:
+                str[0] = v;
+                str[1] = '\0';
+                break;
+            }
+            strcpy(string_value, str);
         }
 
         if (h)

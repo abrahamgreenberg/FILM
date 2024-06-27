@@ -55,7 +55,7 @@ int get_new_name(char *new_name)
     return 1;
 }
 
-void navigate_controls(int ch, int *highlight, char *current_path, char *render_path, Folder *folders, View *view)
+void navigate_controls(int ch, int *highlight, char *current_path, char *render_path, Folder *folders, View *view, Settings *settings)
 {
     switch (ch)
     {
@@ -96,11 +96,11 @@ void navigate_controls(int ch, int *highlight, char *current_path, char *render_
         *highlight = 0;
         *view = SETTINGS;
         break;
-    case 'q':
-    case 'Q':
+    }
+    if (ch == GET_SHORTCUT(EXIT_KEY))
+    {
         endwin();
         exit(0);
-        break;
     }
 }
 

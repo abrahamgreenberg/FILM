@@ -17,7 +17,8 @@ typedef enum
 typedef enum
 {
     BOOLEAN,
-    COLOUR
+    COLOUR,
+    SHORTCUT
 } SettingType;
 
 typedef struct
@@ -28,6 +29,7 @@ typedef struct
     {
         bool boolValue;
         ColourTheme colourValue;
+        char charValue;
     } value;
 } Setting;
 
@@ -40,11 +42,17 @@ typedef struct
 typedef enum
 {
     CREATE_ARCHIVE,
-    COLOUR_THEME
+    COLOUR_THEME,
+    EXIT_KEY,
+    SETTINGS_COUNT
 } SettingIndexes;
 
 Setting createBooleanSetting(const char *name, bool value);
 Setting createColourSetting(const char *name, ColourTheme value);
 void init_settings(Settings *settings);
 void free_settings(Settings *settings);
+
+#define GET_SETTING(I) (settings->settings[I])
+#define GET_SETTING_VALUE(I) (GET_SETTING(I).value)
+#define GET_SHORTCUT(S) (GET_SETTING_VALUE(S).charValue)
 #endif
