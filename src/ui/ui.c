@@ -16,7 +16,7 @@ void truncate_string_from_position(const char *source, char *destination, size_t
     destination[new_length] = '\0';
 }
 
-void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), NAVIGATION_PARAMS(View, int *, int, Settings *), char *current_path, char *debug, int max_level, int *start)
+void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), NAVIGATION_PARAMS(View, int *, bool *, Settings *), char *current_path, char *debug, int max_level, int *start)
 {
     clear();
 
@@ -130,7 +130,7 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
 }
 
 void file_manager_draw_loop(
-    NAVIGATION_PARAMS(View *, int *, int *, Settings *), FOLDER_PARAMS(Diff **, Folder *, int *), PATH_PARAMS(char *), DEBUG_PARAMS(char *, int *), MESSAGE_PARAMS(char *, int *), int *start, int max_level)
+    NAVIGATION_PARAMS(View *, int *, bool *, Settings *), FOLDER_PARAMS(Diff **, Folder *, int *), PATH_PARAMS(char *), DEBUG_PARAMS(char *, int *), MESSAGE_PARAMS(char *, int *), int *start, int max_level)
 {
     if (strcmp(render_path, current_path) != 0)
     {
@@ -140,7 +140,7 @@ void file_manager_draw_loop(
         list_folders(current_path, folders, folder_count, diffs);
     }
     strcpy(render_path, current_path);
-    draw_ui(FOLDER_PARAMS(*, , *), MESSAGE_PARAMS(, *), NAVIGATION_PARAMS(*, , *, ), current_path, debug_string, max_level, start);
+    draw_ui(FOLDER_PARAMS(*, , *), MESSAGE_PARAMS(, *), NAVIGATION_PARAMS(*, , , ), current_path, debug_string, max_level, start);
 
     debug_string[0] = '\0';
     *debug_string_length = 0;

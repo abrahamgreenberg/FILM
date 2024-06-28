@@ -1,7 +1,7 @@
 #include "settings_controls.h"
 #include "save_settings.h"
 
-void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings *))
+void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings *))
 {
     if (ch == GET_SHORTCUT(EXIT_KEY))
     {

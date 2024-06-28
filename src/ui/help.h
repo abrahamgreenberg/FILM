@@ -5,6 +5,6 @@
 #include "../settings/colours.h"
 #include "../main.h"
 
-void help_menu_draw_loop(NAVIGATION_PARAMS(View *, int *, int *, Settings *));
+void help_menu_draw_loop(NAVIGATION_PARAMS(View *, int *, bool *, Settings *));
 
 #endif

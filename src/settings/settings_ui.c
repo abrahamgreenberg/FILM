@@ -68,7 +68,7 @@ void settings_draw_ui(Settings *settings, int highlight)
     refresh();
 }
 
-void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, int *, Settings *))
+void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, bool *, Settings *))
 {
     // if (*highlight < 0)
     //     *highlight = 0;

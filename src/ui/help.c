@@ -14,7 +14,7 @@ void help_draw_ui(Settings *settings)
     refresh();
 }
 
-void help_menu_draw_loop(NAVIGATION_PARAMS(View *, int *, int *, Settings *))
+void help_menu_draw_loop(NAVIGATION_PARAMS(View *, int *, bool *, Settings *))
 {
     help_draw_ui(settings);
 
@@ -24,7 +24,6 @@ void help_menu_draw_loop(NAVIGATION_PARAMS(View *, int *, int *, Settings *))
 
     if (ch == GET_SHORTCUT(EXIT_KEY))
     {
-        *highlight = -1;
-        *view = NAVIGATE;
+        navigate(CALL_NAVIGATE_PARAMS, *view);
     }
 }

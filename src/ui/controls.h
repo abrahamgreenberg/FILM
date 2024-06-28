@@ -15,8 +15,8 @@
 void append_str(char *string, int *string_length, const char *append_string);
 void append_frmt(char *string, int *string_length, const char *format, ...);
 
-void navigate_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings *), PATH_PARAMS(char *), Folder *folders);
-void edit_controls(int ch, FOLDER_PARAMS(Diff **, Folder *, int *), NAVIGATION_PARAMS(View *, int *, int *, Settings *), DEBUG_PARAMS(char *, int *), Diff *diff);
-void write_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings *), FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int *), PATH_PARAMS(char *));
+void navigate_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings *), PATH_PARAMS(char *), Folder *folders);
+void edit_controls(int ch, FOLDER_PARAMS(Diff **, Folder *, int *), NAVIGATION_PARAMS(View *, int *, bool *, Settings *), DEBUG_PARAMS(char *, int *), Diff *diff);
+void write_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings *), FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int *), PATH_PARAMS(char *));
 
 #endif

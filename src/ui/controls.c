@@ -57,7 +57,7 @@ int get_new_name(char *new_name)
     return 1;
 }
 
-void navigate_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings *), PATH_PARAMS(char *), Folder *folders)
+void navigate_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings *), PATH_PARAMS(char *), Folder *folders)
 {
     if (SHRT(NAVIGATE_KEY))
     {
@@ -105,7 +105,7 @@ void navigate_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings 
     }
 }
 
-void edit_controls(int ch, FOLDER_PARAMS(Diff **, Folder *, int *), NAVIGATION_PARAMS(View *, int *, int *, Settings *), DEBUG_PARAMS(char *, int *), Diff *diff)
+void edit_controls(int ch, FOLDER_PARAMS(Diff **, Folder *, int *), NAVIGATION_PARAMS(View *, int *, bool *, Settings *), DEBUG_PARAMS(char *, int *), Diff *diff)
 {
     char new_name[MAX_FILE_NAME_LENGTH];
 
@@ -242,7 +242,7 @@ void edit_controls(int ch, FOLDER_PARAMS(Diff **, Folder *, int *), NAVIGATION_P
     }
 }
 
-void write_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings *), FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int *), PATH_PARAMS(char *))
+void write_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings *), FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int *), PATH_PARAMS(char *))
 {
     if (SHRT(EXIT_KEY))
         *view = EDIT;

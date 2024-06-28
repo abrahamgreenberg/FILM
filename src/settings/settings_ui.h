@@ -6,5 +6,5 @@
 #include "settings.h"
 #include "colours.h"
 
-void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, int *, Settings *));
+void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, bool *, Settings *));
 #endif
