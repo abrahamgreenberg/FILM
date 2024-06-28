@@ -1,6 +1,6 @@
 #include "save_settings.h"
 
-char *settings_path(char *str)
+void settings_path(char *str)
 {
     sprintf(str, "%s/.my_file_manager/settings.dat", getenv("HOME"));
 }

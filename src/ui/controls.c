@@ -1,5 +1,7 @@
 #include "controls.h"
 
+#define SHRT(S) (ch == GET_SHORTCUT(S))
+
 void append_str(char *string, int *string_length, const char *append_string)
 {
     strncat(string, append_string, STRING_LENGTH);
@@ -57,9 +59,8 @@ int get_new_name(char *new_name)
 
 void navigate_controls(int ch, int *highlight, char *current_path, char *render_path, Folder *folders, View *view, Settings *settings)
 {
-    switch (ch)
+    if (SHRT(NAVIGATE_KEY))
     {
-    case '\n':
         if (*highlight == -1)
         {
             char *last_slash = strrchr(current_path, '/');
@@ -82,73 +83,64 @@ void navigate_controls(int ch, int *highlight, char *current_path, char *render_
             current_path[MAX_PATH_LENGTH - 1] = '\0';
         }
         *highlight = -1;
-        break;
-    case 'r':
-    case 'R':
+    }
+    else if (SHRT(RELOAD_DIRS_KEY))
         render_path[0] = '\0';
-        break;
-    case 'e':
-    case 'E':
+    else if (SHRT(OPEN_EDIT_MODE_KEY))
         *view = EDIT;
-        break;
-    case 's':
-    case 'S':
+    else if (SHRT(OPEN_SETTINGS_KEY))
+    {
         *highlight = 0;
         *view = SETTINGS;
-        break;
     }
-    if (ch == GET_SHORTCUT(EXIT_KEY))
+    else if (SHRT(EXIT_KEY))
     {
         endwin();
         exit(0);
     }
 }
 
-void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *folders, int *folder_count, View *view, char *debug_string, int *debug_string_length)
+void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *folders, int *folder_count, View *view, char *debug_string, int *debug_string_length, Settings *settings)
 {
     char new_name[MAX_FILE_NAME_LENGTH];
 
-    switch (ch)
+    if (SHRT(RENAME_KEY))
     {
-    case 'r':
-    case 'R':
-
         if (get_new_name(new_name))
             UpdateDiffName(diffs, highlight, diff->number, new_name);
-        break;
-    case 'w':
-    case 'W':
+    }
+    else if (SHRT(OPEN_WRITE_MODE_KEY))
         *view = WRITE;
-        break;
-    case 'q':
-    case 'Q':
+    else if (SHRT(EXIT_KEY))
+    {
         *view = NAVIGATE;
         if (*diffs != NULL)
             free(*diffs);
         DiffArrayConstructor(diffs, folders, *folder_count);
-        break;
-    case 'u':
-    case 'U':
+    }
+    else if (SHRT(MOVE_UP_KEY))
+    {
         if ((*highlight) <= 0)
-            break;
+            return;
 
         SwapDiffs(*diffs, *highlight, *highlight - 1);
         (*highlight)--;
-        break;
-    case 'd':
-    case 'D':
+    }
+    else if (SHRT(MOVE_DOWN_KEY))
+    {
+
         if ((*highlight) >= (*folder_count) - 1)
-            break;
+            return;
 
         SwapDiffs(*diffs, *highlight, *highlight + 1);
         (*highlight)++;
-        break;
-    case 'c':
-    case 'C':
+    }
+    else if (SHRT(CREATE_DIR_KEY))
+    {
         append_str(debug_string, debug_string_length, "CREATE ");
 
         if (*folder_count >= 100)
-            break;
+            return;
         int number = 0;
         int i = 0;
 
@@ -189,18 +181,19 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
             UpdateDiffName(diffs, &i, number, new_name);
             (*folder_count)++;
         }
-        break;
-    case 'a':
-    case 'A':
+    }
+    else if (SHRT(ARCHIVE_DIR_KEY))
+    {
         if (strcmp(diff->formatted_name, "[99] Archive") == 0)
-            break;
+            return;
 
         ToggleDiffAction(&(*diffs)[*highlight], ARCHIVE);
+    }
+    else if (SHRT(DECREMENT_DIR_NUMBER_KEY))
+    {
 
-        break;
-    case '-':
         if (DiffHasAction(*diff, ARCHIVE) || diff->number <= 1)
-            break;
+            return;
 
         diff->number--;
         UpdateDiffName(diffs, highlight, diff->number, diff->name);
@@ -213,11 +206,11 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
 
             (*highlight)--;
         }
-
-        break;
-    case '=':
+    }
+    else if (SHRT(INCREMENT_DIR_NUMBER_KEY))
+    {
         if (DiffHasAction(*diff, ARCHIVE) || diff->number >= 99)
-            break;
+            return;
 
         diff->number++;
         UpdateDiffName(diffs, highlight, diff->number, diff->name);
@@ -230,10 +223,9 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
 
             (*highlight)++;
         }
-
-        break;
-    case 'f':
-    case 'F':
+    }
+    else if (SHRT(FIX_DIR_NUMBERS_KEY))
+    {
         int j = 0;
         for (int i = 0; i < *folder_count; i++)
         {
@@ -247,18 +239,13 @@ void edit_controls(int ch, Diff *diff, Diff **diffs, int *highlight, Folder *fol
 
 void write_controls(int ch, View *view, const char *current_path, Folder *folders, Diff *diffs, size_t folder_count, char *message_string, int *message_string_length, char *render_path, Settings *settings, int *highlight)
 {
-    switch (ch)
-    {
-    case 'q':
-    case 'Q':
+    if (SHRT(EXIT_KEY))
         *view = EDIT;
-        break;
-    case 'c':
-    case 'C':
+    else if (SHRT(CONFIRM_CHANGES_KEY))
+    {
         *view = NAVIGATE;
         write_changes(current_path, folders, diffs, folder_count, message_string, message_string_length, settings);
         render_path[0] = '\0';
         *highlight = -1;
-        break;
     }
 }

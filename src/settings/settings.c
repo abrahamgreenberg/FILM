@@ -52,20 +52,20 @@ void init_settings(Settings *settings)
     GET_SETTING(CREATE_ARCHIVE) = createBooleanSetting("Create archive", false);
     GET_SETTING(COLOUR_THEME) = createColourSetting("Colour Theme", DEFAULT_THEME);
     GET_SETTING(EXIT_KEY) = createShortcutSetting("Exit key", 'q');
-    GET_SETTING(NAVIGATE_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(RELOAD_DIRS_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(OPEN_EDIT_MODE_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(OPEN_WRITE_MODE_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(OPEN_SETTINGS_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(RENAME_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(MOVE_UP_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(MOVE_DOWN_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(CREATE_DIR_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(ARCHIVE_DIR_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(DECREMENT_DIR_NUMBER_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(INCREMENT_DIR_NUMBER_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(FIX_DIR_NUMBERS_KEY) = createShortcutSetting("STR", 'C');
-    GET_SETTING(CONFIRM_CHANGES_KEY) = createShortcutSetting("STR", 'C');
+    GET_SETTING(NAVIGATE_KEY) = createShortcutSetting("Navigate", 32);
+    GET_SETTING(RELOAD_DIRS_KEY) = createShortcutSetting("Reload folders", 'r');
+    GET_SETTING(OPEN_EDIT_MODE_KEY) = createShortcutSetting("Edit mode", 'e');
+    GET_SETTING(OPEN_WRITE_MODE_KEY) = createShortcutSetting("Write mode", 'w');
+    GET_SETTING(OPEN_SETTINGS_KEY) = createShortcutSetting("Settings", 's');
+    GET_SETTING(RENAME_KEY) = createShortcutSetting("Rename", 'r');
+    GET_SETTING(MOVE_UP_KEY) = createShortcutSetting("Move folder up", 'u');
+    GET_SETTING(MOVE_DOWN_KEY) = createShortcutSetting("Move folder down", 'd');
+    GET_SETTING(CREATE_DIR_KEY) = createShortcutSetting("Create folder", 'c');
+    GET_SETTING(ARCHIVE_DIR_KEY) = createShortcutSetting("Archive", 'a');
+    GET_SETTING(DECREMENT_DIR_NUMBER_KEY) = createShortcutSetting("Decrement folder number", '-');
+    GET_SETTING(INCREMENT_DIR_NUMBER_KEY) = createShortcutSetting("Increment folder number", '=');
+    GET_SETTING(FIX_DIR_NUMBERS_KEY) = createShortcutSetting("Fix folder numbers", 'f');
+    GET_SETTING(CONFIRM_CHANGES_KEY) = createShortcutSetting("Confirm changes", 'c');
 }
 
 void free_settings(Settings *settings)

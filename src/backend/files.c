@@ -84,7 +84,7 @@ void write_changes(const char *current_path, Folder *folders, Diff *diffs, size_
 
             if (GET_SETTING_VALUE(CREATE_ARCHIVE).boolValue)
             {
-                strncat(new_path, "/[99] Archive", sizeof(new_path));
+                strcat(new_path, "/[99] Archive");
                 if (mkdir(new_path, 0700))
                     append_frmt(message_string, message_string_length, "(Failed to create folder %s/[99] Archive) ", diff.formatted_name);
             }

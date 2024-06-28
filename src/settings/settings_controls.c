@@ -3,13 +3,13 @@
 
 void settings_controls(int ch, View *view, Settings *settings, int *highlight)
 {
-    switch (ch)
+    if (ch == GET_SHORTCUT(EXIT_KEY))
     {
-    case 'q':
-    case 'Q':
         *highlight = -1;
         *view = NAVIGATE;
-        break;
+    }
+    switch (ch)
+    {
     case KEY_UP:
     case 'k':
     case 'K':
