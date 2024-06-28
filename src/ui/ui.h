@@ -11,21 +11,6 @@
 #include "controls.h"
 #include <ncurses.h>
 
-void file_manager_draw_loop(
-    char *current_path,
-    char *render_path,
-    Diff **diffs,
-    Folder *folders,
-    int *folder_count,
-    Settings *settings,
-    char *debug_string,
-    int *debug_string_length,
-    char *message_string,
-    int *message_string_length,
-    int *start,
-    int max_level,
-    int *highlight,
-    View *view,
-    int *help_page);
+void file_manager_draw_loop(NAVIGATION_PARAMS(View *, int *, int *), FOLDER_PARAMS(Diff **, Folder *, int *), PATH_PARAMS(char *), DEBUG_PARAMS(char *, int *), MESSAGE_PARAMS(char *, int *), Settings *settings, int *start, int max_level);
 
 #endif

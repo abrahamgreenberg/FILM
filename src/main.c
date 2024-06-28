@@ -98,9 +98,9 @@ int main(int argc, char *argv[])
     while (1)
     {
         if (view != SETTINGS)
-            file_manager_draw_loop(current_path, render_path, &diffs, folders, &folder_count, &settings, debug_string, &debug_string_length, message_string, &message_string_length, &start, max_level, &highlight, &view, &help_page);
+            file_manager_draw_loop(NAVIGATION_PARAMS(&, &, &), FOLDER_PARAMS(&, , &), PATH_PARAMS(), DEBUG_PARAMS(, &), MESSAGE_PARAMS(, &), &settings, &start, max_level);
         else
-            settings_draw_loop(&view, &settings, &highlight);
+            settings_draw_loop(NAVIGATION_PARAMS(&, &, &), &settings);
     }
 
     endwin();

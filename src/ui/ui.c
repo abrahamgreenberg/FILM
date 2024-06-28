@@ -16,11 +16,7 @@ void truncate_string_from_position(const char *source, char *destination, size_t
     destination[new_length] = '\0';
 }
 
-void draw_ui(
-    Diff *diffs, Folder *folders, int folder_count,
-    const char *current_path, const char *debug, const char *message, int message_string_length, int *highlight, int max_level, int *start, View view, int help_page, Settings *settings
-
-)
+void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), NAVIGATION_PARAMS(View, int *, int), char *current_path, char *debug, int max_level, int *start, Settings *settings)
 {
     clear();
 
@@ -90,7 +86,7 @@ void draw_ui(
     {
         col1 = GET_COLOUR(settings, GREEN);
         attron(col1);
-        mvprintw(j + 1, 0, "%s", message);
+        mvprintw(j + 1, 0, "%s", message_string);
         attroff(col1);
     }
 
@@ -155,21 +151,7 @@ void draw_ui(
 }
 
 void file_manager_draw_loop(
-    char *current_path,
-    char *render_path,
-    Diff **diffs,
-    Folder *folders,
-    int *folder_count,
-    Settings *settings,
-    char *debug_string,
-    int *debug_string_length,
-    char *message_string,
-    int *message_string_length,
-    int *start,
-    int max_level,
-    int *highlight,
-    View *view,
-    int *help_page)
+    NAVIGATION_PARAMS(View *, int *, int *), FOLDER_PARAMS(Diff **, Folder *, int *), PATH_PARAMS(char *), DEBUG_PARAMS(char *, int *), MESSAGE_PARAMS(char *, int *), Settings *settings, int *start, int max_level)
 {
     if (strcmp(render_path, current_path) != 0)
     {
@@ -179,7 +161,7 @@ void file_manager_draw_loop(
         list_folders(current_path, folders, folder_count, diffs);
     }
     strcpy(render_path, current_path);
-    draw_ui(*diffs, folders, *folder_count, current_path, debug_string, message_string, *message_string_length, highlight, max_level, start, *view, *help_page, settings);
+    draw_ui(FOLDER_PARAMS(*, , *), MESSAGE_PARAMS(, *), NAVIGATION_PARAMS(*, , *), current_path, debug_string, max_level, start, settings);
 
     debug_string[0] = '\0';
     *debug_string_length = 0;
@@ -222,13 +204,13 @@ void file_manager_draw_loop(
     switch (*view)
     {
     case NAVIGATE:
-        navigate_controls(ch, highlight, current_path, render_path, folders, view, settings);
+        navigate_controls(ch, NAVIGATION_PARAMS(, , ), PATH_PARAMS(), folders, settings);
         break;
     case EDIT:
-        edit_controls(ch, &(*diffs)[*highlight], diffs, highlight, folders, folder_count, view, debug_string, debug_string_length, settings);
+        edit_controls(ch, FOLDER_PARAMS(, , ), NAVIGATION_PARAMS(, , ), DEBUG_PARAMS(, ), &(*diffs)[*highlight], settings);
         break;
     case WRITE:
-        write_controls(ch, view, current_path, folders, *diffs, *folder_count, message_string, message_string_length, render_path, settings, highlight);
+        write_controls(ch, NAVIGATION_PARAMS(, , ), FOLDER_PARAMS(*, , *), MESSAGE_PARAMS(, ), PATH_PARAMS(), settings);
         break;
     default:
         break;

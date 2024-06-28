@@ -68,7 +68,7 @@ void settings_draw_ui(Settings *settings, int highlight)
     refresh();
 }
 
-void settings_draw_loop(View *view, Settings *settings, int *highlight)
+void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, int *), Settings *settings)
 {
     if (*highlight < 0)
         *highlight = 0;
@@ -78,5 +78,5 @@ void settings_draw_loop(View *view, Settings *settings, int *highlight)
     if (ch >= 'A' && ch <= 'Z')
         ch += ('a' - 'A');
 
-    settings_controls(ch, view, settings, highlight);
+    settings_controls(ch, NAVIGATION_PARAMS(, , ), settings);
 }
