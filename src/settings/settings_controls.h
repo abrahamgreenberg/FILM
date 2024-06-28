@@ -7,5 +7,5 @@
 #include <stdlib.h>
 #include <ncurses.h>
 
-void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *), Settings *settings);
+void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings *));
 #endif
