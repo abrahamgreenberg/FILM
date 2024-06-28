@@ -12,6 +12,7 @@
 #include "settings/settings.h"
 #include "settings/settings_ui.h"
 #include "settings/colours.h"
+#include "settings/save_settings.h"
 
 /*
 TODO: MAKE A SETTINGS UI/SYSTEM:
@@ -38,6 +39,7 @@ int main(int argc, char *argv[])
 
     Settings settings;
     init_settings(&settings);
+    load_settings(&settings);
 
     start_color();
     use_default_colors();

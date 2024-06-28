@@ -1,4 +1,5 @@
 #include "settings_controls.h"
+#include "save_settings.h"
 
 void settings_controls(int ch, View *view, Settings *settings, int *highlight)
 {
@@ -44,6 +45,7 @@ void settings_controls(int ch, View *view, Settings *settings, int *highlight)
             }
             GET_SETTING_VALUE(*highlight).charValue = c;
         }
+        save_settings(settings);
         break;
     }
 }
