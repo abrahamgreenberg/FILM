@@ -37,6 +37,9 @@ void settings_controls(int ch, View *view, Settings *settings, int *highlight)
 
             while (!valid)
             {
+                mvprintw(LINES - 1, 0, "Enter new shortcut: ");
+                refresh();
+
                 c = getch();
                 if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
                     valid = true;
