@@ -42,6 +42,8 @@ void settings_controls(int ch, View *view, Settings *settings, int *highlight)
                     valid = true;
                 else if (c == 27 || c == 32 || c == 9)
                     valid = true;
+                if (c >= 'A' && c <= 'Z')
+                    c += ('a' - 'A');
             }
             GET_SETTING_VALUE(*highlight).charValue = c;
         }

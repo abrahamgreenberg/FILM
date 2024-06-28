@@ -75,5 +75,8 @@ void settings_draw_loop(View *view, Settings *settings, int *highlight)
     settings_draw_ui(settings, *highlight);
 
     int ch = getch();
+    if (ch >= 'A' && ch <= 'Z')
+        ch += ('a' - 'A');
+
     settings_controls(ch, view, settings, highlight);
 }

@@ -185,19 +185,19 @@ void file_manager_draw_loop(
     *debug_string_length = 0;
 
     int ch = getch();
+    if (ch >= 'A' && ch <= 'Z')
+        ch += ('a' - 'A');
 
     switch (ch)
     {
     case KEY_UP:
     case 'k':
-    case 'K':
         if (*view != WRITE)
             if (*highlight > *start)
                 (*highlight)--;
         break;
     case KEY_DOWN:
     case 'j':
-    case 'J':
         if (*view != WRITE)
             if (*highlight < *folder_count - 1)
                 (*highlight)++;
