@@ -57,6 +57,7 @@ void init_settings(Settings *settings)
     GET_SETTING(OPEN_EDIT_MODE_KEY) = createShortcutSetting("Edit mode", 'e');
     GET_SETTING(OPEN_WRITE_MODE_KEY) = createShortcutSetting("Write mode", 'w');
     GET_SETTING(OPEN_SETTINGS_KEY) = createShortcutSetting("Settings", 's');
+    GET_SETTING(OPEN_HELP_KEY) = createShortcutSetting("Help", 'h');
     GET_SETTING(RENAME_KEY) = createShortcutSetting("Rename", 'r');
     GET_SETTING(MOVE_UP_KEY) = createShortcutSetting("Move folder up", 'u');
     GET_SETTING(MOVE_DOWN_KEY) = createShortcutSetting("Move folder down", 'd');

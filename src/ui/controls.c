@@ -93,6 +93,11 @@ void navigate_controls(int ch, NAVIGATION_PARAMS(View *, int *, int *, Settings 
         *highlight = 0;
         *view = SETTINGS;
     }
+    else if (SHRT(OPEN_HELP_KEY))
+    {
+        *highlight = 0;
+        *view = HELP;
+    }
     else if (SHRT(EXIT_KEY))
     {
         endwin();

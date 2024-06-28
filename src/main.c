@@ -9,6 +9,7 @@
 #include "backend/folders.h"
 #include "backend/diff.h"
 #include "ui/ui.h"
+#include "ui/help.h"
 #include "settings/settings.h"
 #include "settings/settings_ui.h"
 #include "settings/colours.h"
@@ -17,12 +18,32 @@
 /*
 
 TODO: CURRENTLY HELP MENU DOESNT USE SHORTCUTS I WANT TO FIX THIS AND THE HELP UI IN GENERAL (MAYBE A HELP VIEW)
+TODO: HELP SHOULD BE A BOOLEAN, NOT A VIEW SO IT CAN BE ACTIVATED ANYWHERE
 BUGFIX: ADD -, = AND ENTER AS KEYBOARD SHORTCUTS
 BUGFIX: ESCAPE HAS TO BE PRESSED TWICE
 TODO: IMPROVE SETTINGS UI
 TODO: ABILITY TO BRING IN FOLDERS THAT DON'T FOLLOW THE SYSTEM?
+BUGFIX: IF A NEW SETTING IS ADDED, CURRENLTY THEY ARE ALL OVERRIDDEN, NEED TO FIX THIS BEHAVIOUR
 
  */
+
+void navigate(View *view, int *highlight, bool *help, View navigateTo)
+{
+    if (navigateTo == HELP || navigateTo == SETTINGS)
+        *highlight = 0;
+    else if (navigateTo == NAVIGATE)
+        *highlight = -1;
+
+    if (*help)
+        *help = false;
+    else if (navigateTo == HELP)
+        *help = true;
+    else
+    {
+        *help = false;
+        *view = navigateTo;
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -39,8 +60,9 @@ int main(int argc, char *argv[])
     }
 
     Settings settings;
-    init_settings(&settings);
     load_settings(&settings);
+    if (settings.count != SETTINGS_COUNT)
+        init_settings(&settings);
 
     start_color();
     use_default_colors();
@@ -79,29 +101,35 @@ int main(int argc, char *argv[])
     int folder_count = 0;
     int highlight = -1;
 
-    int help_page = 0;
     Diff *diffs = NULL;
     View view = NAVIGATE;
+    bool help = false;
 
-    if (DEBUG_MODE == 1)
+    if (DEBUG_MODE)
     {
-        // view = NAVIAGE;
-        // strcpy(current_path, "/home/abigreenberg/Documents/[01] Tech/[01] Programming/[02] c/file_manager/[01] test");
-        view = SETTINGS;
-        highlight = 2;
-        // highlight = 4;
-        // settings.settings[COLOUR_THEME].value.colourValue = 1;
+        navigate(&view, &highlight, &help, HELP);
+        highlight = 0;
     }
 
     bkgd(GET_COLOUR((&settings), BACKGROUND));
 
     while (1)
-    {
-        if (view != SETTINGS)
-            file_manager_draw_loop(NAVIGATION_PARAMS(&, &, &, &), FOLDER_PARAMS(&, , &), PATH_PARAMS(), DEBUG_PARAMS(, &), MESSAGE_PARAMS(, &), &start, max_level);
+        if (help)
+            help_menu_draw_loop(NAVIGATION_PARAMS(&, &, &, &));
         else
-            settings_draw_loop(NAVIGATION_PARAMS(&, &, &, &));
-    }
+            switch (view)
+            {
+            case SETTINGS:
+                settings_draw_loop(NAVIGATION_PARAMS(&, &, &, &));
+                break;
+            case NAVIGATE:
+            case EDIT:
+            case WRITE:
+                file_manager_draw_loop(NAVIGATION_PARAMS(&, &, &, &), FOLDER_PARAMS(&, , &), PATH_PARAMS(), DEBUG_PARAMS(, &), MESSAGE_PARAMS(, &), &start, max_level);
+                break;
+            default:
+                break;
+            }
 
     endwin();
     free(folders);

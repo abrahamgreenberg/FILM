@@ -1,6 +1,6 @@
 #include "ui.h"
 
-#define SET_HELP_MSG(S) (strcpy(help_msg, S))
+// #define SET_HELP_MSG(S) (strcpy(help_msg, S))
 
 void truncate_string_from_position(const char *source, char *destination, size_t start_position, size_t new_length)
 {
@@ -37,39 +37,20 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
     }
 
     char status_string[STRING_LENGTH / 8];
-    char help_msg[STRING_LENGTH];
 
     switch (view)
     {
     case NAVIGATE:
         strcpy(status_string, "[Navigation mode]");
         col1 = GET_COLOUR(settings, CYAN);
-
-        if (help_page == 0)
-            // strcpy(help_msg, "Controls (1/2): [2] Page 2. [Q] Quit. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
-            SET_HELP_MSG("Controls (1/2): [2] Page 2. [Q] Quit. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
-        else
-            SET_HELP_MSG("Controls (2/2): [1] Page 1. [Enter] Navigate. [E] Edit mode. [R] Refresh files.");
         break;
     case EDIT:
         strcpy(status_string, "[Edit mode]");
         col1 = GET_COLOUR(settings, BLUE);
-
-        if (help_page == 0)
-            SET_HELP_MSG("Controls (1/5): [1] Page 1. [2] Page 2. [3] Page 3. [4] Page 4. [5] Page 5. ");
-        else if (help_page == 1)
-            SET_HELP_MSG("Controls (2/5): [Q] Navigation mode. [Up Arrow/K] Move up. [Down Arrow/J] Move down.");
-        else if (help_page == 2)
-            SET_HELP_MSG("Controls (3/5): [U] Move up. [D] Move Down. [C] Create folder. [R] Rename folder.");
-        else if (help_page == 3)
-            SET_HELP_MSG("Controls (4/5):  [A] Archive folder. [-] Decrement number. [=] Increment number.");
-        else
-            SET_HELP_MSG("Controls (5/5): [F] Fix numbering. [W] Write changes.");
         break;
     case WRITE:
         strcpy(status_string, "[Write mode]");
         col1 = GET_COLOUR(settings, MAGENTA);
-        SET_HELP_MSG("Controls: [Q] Edit mode. [C] Confirm.");
         break;
     default:
         break;
@@ -79,8 +60,6 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
     mvprintw(j++, 0, "%s", status_string);
     attroff(col1);
     mvprintw(j++, 0, "Current folder: %s", current_path);
-
-    mvprintw(++j, 0, "%s", help_msg);
 
     if (message_string_length > 0)
     {
@@ -183,21 +162,6 @@ void file_manager_draw_loop(
         if (*view != WRITE)
             if (*highlight < *folder_count - 1)
                 (*highlight)++;
-        break;
-    case '1':
-        *help_page = 0;
-        break;
-    case '2':
-        *help_page = 1;
-        break;
-    case '3':
-        *help_page = 2;
-        break;
-    case '4':
-        *help_page = 3;
-        break;
-    case '5':
-        *help_page = 4;
         break;
     }
 

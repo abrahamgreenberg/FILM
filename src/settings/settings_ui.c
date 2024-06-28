@@ -70,8 +70,8 @@ void settings_draw_ui(Settings *settings, int highlight)
 
 void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, int *, Settings *))
 {
-    if (*highlight < 0)
-        *highlight = 0;
+    // if (*highlight < 0)
+    //     *highlight = 0;
     settings_draw_ui(settings, *highlight);
 
     int ch = getch();
