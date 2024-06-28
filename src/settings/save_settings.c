@@ -1,15 +1,20 @@
 #include "save_settings.h"
 
+void settings_dir_path(char *str)
+{
+    sprintf(str, "%s/.my_file_manager", getenv("HOME"));
+}
+
 void settings_path(char *str)
 {
-    sprintf(str, "%s/.my_file_manager/settings.dat", getenv("HOME"));
+    settings_dir_path(str);
+    strcat(str, "/settings.dat");
 }
 
 void save_settings(Settings *settings)
 
 {
     char path[OS_MAX_PATH_LENGTH];
-    // mkdir("~/.my_file_manager", 0700);
     settings_path(path);
     FILE *file = fopen(path, "wb");
     if (file == NULL)
@@ -44,6 +49,8 @@ void save_settings(Settings *settings)
 void load_settings(Settings *settings)
 {
     char path[OS_MAX_PATH_LENGTH];
+    settings_dir_path(path);
+    mkdir(path, 0700);
     settings_path(path);
     FILE *file = fopen(path, "rb");
     if (file == NULL)
