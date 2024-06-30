@@ -46,7 +46,7 @@ void save_settings(Settings *settings)
     fclose(file);
 }
 
-void load_settings(Settings *settings)
+int load_settings(Settings *settings)
 {
     char path[OS_MAX_PATH_LENGTH];
     settings_dir_path(path);
@@ -54,9 +54,10 @@ void load_settings(Settings *settings)
     settings_path(path);
     FILE *file = fopen(path, "rb");
     if (file == NULL)
-        return;
+        return -1;
 
-    fread(SETTINGS_COUNT, sizeof(int), 1, file);
+    int settings_count;
+    fread(&settings_count, sizeof(int), 1, file);
     *settings = (Settings)malloc(SETTINGS_COUNT * sizeof(Setting));
 
     for (int i = 0; i < SETTINGS_COUNT; i++)
@@ -86,4 +87,6 @@ void load_settings(Settings *settings)
     }
 
     fclose(file);
+
+    return settings_count;
 }

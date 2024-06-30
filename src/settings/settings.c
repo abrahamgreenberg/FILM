@@ -40,9 +40,6 @@ Setting createShortcutSetting(const char *name, ColourTheme value)
 
 void init_settings(Settings *settings)
 {
-    const int settings_count = SETTINGS_COUNT;
-    const int constant_settings = CONSTANT_SETTINGS;
-    const int settings_total_count = SETTINGS_TOTAL_COUNT;
     *settings = (Setting *)malloc(SETTINGS_COUNT * sizeof(Setting));
 
     if (*settings == NULL)

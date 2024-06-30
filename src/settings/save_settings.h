@@ -7,5 +7,5 @@
 #include "settings.h"
 
 void save_settings(Settings *settings);
-void load_settings(Settings *settings);
+int load_settings(Settings *settings);
 #endif
