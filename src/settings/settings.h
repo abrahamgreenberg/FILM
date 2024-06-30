@@ -39,6 +39,8 @@ typedef struct
     int count;
 } Settings;
 
+#define CONSTANT_SETTINGS 2
+
 typedef enum
 {
     CREATE_ARCHIVE,

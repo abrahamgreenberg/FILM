@@ -21,7 +21,7 @@ void save_settings(Settings *settings)
         return;
 
     fwrite(&settings->count, sizeof(int), 1, file);
-    for (int i = 0; i < settings->count; i++)
+    for (int i = 0; i < settings->count - CONSTANT_SETTINGS; i++)
     {
         Setting *setting = &settings->settings[i];
         int nameLen = strlen(setting->name) + 1;

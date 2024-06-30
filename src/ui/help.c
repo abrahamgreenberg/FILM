@@ -1,43 +1,13 @@
 #include "help.h"
 
 /*
-SHORTCUTS:
-EXIT_KEY, NAVIGATE_KEY, RELOAD_DIRS_KEY, OPEN_EDIT_MODE_KEY, OPEN_WRITE_MODE_KEY,
-OPEN_SETTINGS_KEY, OPEN_HELP_KEY, RENAME_KEY, MOVE_UP_KEY, MOVE_DOWN_KEY,
-CREATE_DIR_KEY, ARCHIVE_DIR_KEY, DECREMENT_DIR_NUMBER_KEY, INCREMENT_DIR_NUMBER_KEY,
-FIX_DIR_NUMBERS_KEY, CONFIRM_CHANGES_KEY, HIGHLIGHT_UP_KEY, HIGHLIGHT_DOWN_KEY
- */
-
-const char *shortcutDescriptions[] = {
-    "",
-    "",
-    "Quit",
-    "Navigate",
-    "Reload folders",
-    "Open edit mode",
-    "Save changes",
-    "Settings",
-    "Help",
-    "Rename folder",
-    "Move folder up",
-    "Move folder down",
-    "Create folder",
-    "Archive folder",
-    "Decrement folder number",
-    "Increment folder number",
-    "Fix folder numbers",
-    "Confirm changes",
-    "Move cursor up",
-    "Move cursor down"};
-
-/*
 MODES:
 NAVIGATE, EDIT, WRITE, SETTINGS, HELP,ALL VIEWS
 */
 
 const int shortcutModeMappings[][9] = {
     {4, NAVIGATE_KEY, RELOAD_DIRS_KEY, OPEN_SETTINGS_KEY, OPEN_EDIT_MODE_KEY, 0, 0, 0, 0},
-    {8, MOVE_UP_KEY, MOVE_DOWN_KEY, CREATE_DIR_KEY, CREATE_ARCHIVE, INCREMENT_DIR_NUMBER_KEY, DECREMENT_DIR_NUMBER_KEY, FIX_DIR_NUMBERS_KEY, OPEN_WRITE_MODE_KEY},
+    {8, MOVE_UP_KEY, MOVE_DOWN_KEY, CREATE_DIR_KEY, ARCHIVE_DIR_KEY, INCREMENT_DIR_NUMBER_KEY, DECREMENT_DIR_NUMBER_KEY, FIX_DIR_NUMBERS_KEY, OPEN_WRITE_MODE_KEY},
     {1, CONFIRM_CHANGES_KEY, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -45,13 +15,33 @@ const int shortcutModeMappings[][9] = {
 
 void renderShortcutMappings(View view, int *j, Settings *settings)
 {
+    int c = GET_COLOUR(settings, YELLOW);
+    char k[32];
+    char d[STRING_LENGTH];
 
-    for (int i = 1; i < shortcutModeMappings[view][0]; i++)
+    for (int i = 1; i <= shortcutModeMappings[view][0]; i++)
     {
-        char k[8];
         SettingIndexes index = shortcutModeMappings[view][i];
-        setting_string(settings, index, k);
-        mvprintw((*j)++, 0, "%s: %s\n", k, shortcutDescriptions[index]);
+        if (index == HIGHLIGHT_UP_KEY)
+        {
+            strcpy(k, "j/up arrow");
+            strcpy(d, "Move cursor up");
+        }
+        else if (index == HIGHLIGHT_DOWN_KEY)
+        {
+            strcpy(k, "k/down arrow");
+            strcpy(d, "Move cursor down");
+        }
+        else
+        {
+            setting_string(settings, index, k);
+            strcpy(d, GET_SETTING(index).name);
+        }
+        attron(c);
+        mvprintw(*j, 0, "%s: ", k);
+        attroff(c);
+
+        mvprintw((*j)++, strlen(k) + 2, "%s", d);
     }
 }
 
@@ -86,8 +76,8 @@ void help_draw_ui(Settings *settings, View view)
     }
     attroff(c);
 
-    renderShortcutMappings(view, &j, settings);
     renderShortcutMappings(VIEW_COUNT, &j, settings);
+    renderShortcutMappings(view, &j, settings);
 
     j += 2;
 
