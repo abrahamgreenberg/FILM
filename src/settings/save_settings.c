@@ -12,7 +12,6 @@ void settings_path(char *str)
 }
 
 void save_settings(Settings *settings)
-
 {
     char path[OS_MAX_PATH_LENGTH];
     settings_path(path);
@@ -20,7 +19,8 @@ void save_settings(Settings *settings)
     if (file == NULL)
         return;
 
-    fwrite(SETTINGS_COUNT, sizeof(int), 1, file);
+    int settings_count = SETTINGS_COUNT;
+    fwrite(&settings_count, sizeof(int), 1, file);
     for (int i = 0; i < SETTINGS_COUNT; i++)
     {
         Setting *setting = &GET_SETTING(i);
