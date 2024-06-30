@@ -14,6 +14,8 @@ void settings_path(char *str)
 void save_settings(Settings *settings)
 {
     char path[OS_MAX_PATH_LENGTH];
+    settings_dir_path(path);
+    mkdir(path, 0700);
     settings_path(path);
     FILE *file = fopen(path, "wb");
     if (file == NULL)
@@ -24,10 +26,6 @@ void save_settings(Settings *settings)
     for (int i = 0; i < SETTINGS_COUNT; i++)
     {
         Setting *setting = &GET_SETTING(i);
-        int nameLen = strlen(setting->name) + 1;
-        fwrite(&nameLen, sizeof(int), 1, file);
-        fwrite(setting->name, sizeof(char), nameLen, file);
-        fwrite(&setting->type, sizeof(SettingType), 1, file);
 
         switch (setting->type)
         {
@@ -51,8 +49,6 @@ void load_settings(Settings *settings)
     init_settings(settings);
 
     char path[OS_MAX_PATH_LENGTH];
-    settings_dir_path(path);
-    mkdir(path, 0700);
     settings_path(path);
     FILE *file = fopen(path, "rb");
     if (file == NULL)
@@ -64,14 +60,6 @@ void load_settings(Settings *settings)
     for (int i = 0; i < settings_count; i++)
     {
         Setting *setting = &GET_SETTING(i);
-
-        int nameLen;
-        fread(&nameLen, sizeof(int), 1, file);
-
-        setting->name = (char *)malloc(nameLen * sizeof(char));
-        fread(setting->name, sizeof(char), nameLen, file);
-
-        fread(&setting->type, sizeof(SettingType), 1, file);
 
         switch (setting->type)
         {
