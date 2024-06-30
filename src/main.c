@@ -17,15 +17,18 @@
 
 /*
 
-TODO: REMOVE SETTINGS->COUNT AND USE SETTINGS_COUNT
-TODO: MAKE SETTINGS UI LOOK MORE LIKE HELP UI (I PREFER THE LOOK OF IT)
-TODO: ADD "CHANGE SETTING" BUTTON
-BUGFIX: ESCAPE HAS TO BE PRESSED TWICE
-BUGFIX: IF A NEW SETTING IS ADDED, CURRENLTY THEY ARE ALL OVERRIDDEN
-TODO: MAKE navigate(CALL_NAVIGATE_PARAMS, WRITE); A MACRO INSTEAD OF CALL_NAVIGATE_PARAMS
 
-TODO: IMPROVE SETTINGS UI
-TODO: ABILITY TO BRING IN FOLDERS THAT DON'T FOLLOW THE SYSTEM?
+2.TODO: MAKE SETTINGS UI LOOK MORE LIKE HELP UI (I PREFER THE LOOK OF IT)
+
+3. TODO: ADD "CHANGE SETTING" BUTTON
+
+4. BUGFIX: ESCAPE HAS TO BE PRESSED TWICE WHEN BEING ENETRED AS A CHARACTER
+
+5. BUGFIX: IF A NEW SETTING IS ADDED, CURRENLTY THEY ARE ALL OVERRIDDEN
+
+6. TODO: MAKE navigate(CALL_NAVIGATE_PARAMS, WRITE); A MACRO INSTEAD OF CALL_NAVIGATE_PARAMS
+
+FUTURE: TODO: ABILITY TO BRING IN FOLDERS THAT DON'T FOLLOW THE SYSTEM?
 
 */
 
@@ -60,9 +63,10 @@ int main(int argc, char *argv[])
     }
 
     Settings settings;
-    load_settings(&settings);
-    if (settings.count != SETTINGS_COUNT)
-        init_settings(&settings);
+    // load_settings(&settings);
+    // FIXME:
+    // if (settings.count != SETTINGS_COUNT)
+    init_settings(&settings);
 
     start_color();
     use_default_colors();
@@ -112,7 +116,7 @@ int main(int argc, char *argv[])
         highlight = 0;
     }
 
-    bkgd(GET_COLOUR((&settings), BACKGROUND));
+    bkgd(COLOR_PAIR(COLOUR_INDEX((settings[COLOUR_THEME]).value.colourValue, BACKGROUND)));
 
     while (1)
         if (help)

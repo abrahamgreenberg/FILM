@@ -40,10 +40,12 @@ Setting createShortcutSetting(const char *name, ColourTheme value)
 
 void init_settings(Settings *settings)
 {
-    settings->count = SETTINGS_COUNT;
-    settings->settings = (Setting *)malloc(settings->count * sizeof(Setting));
+    const int settings_count = SETTINGS_COUNT;
+    const int constant_settings = CONSTANT_SETTINGS;
+    const int settings_total_count = SETTINGS_TOTAL_COUNT;
+    *settings = (Setting *)malloc(SETTINGS_COUNT * sizeof(Setting));
 
-    if (settings->settings == NULL)
+    if (*settings == NULL)
     {
         printf("Memory allocation failed\n");
         exit(1);
@@ -71,12 +73,12 @@ void init_settings(Settings *settings)
 
 void free_settings(Settings *settings)
 {
-    if (settings->settings != NULL)
+    if (*settings != NULL)
     {
-        for (int i = 0; i < settings->count; ++i)
+        for (int i = 0; i < SETTINGS_COUNT; ++i)
         {
             free(GET_SETTING(i).name);
         }
-        free(settings->settings);
+        free(*settings);
     }
 }

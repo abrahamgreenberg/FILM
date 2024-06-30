@@ -33,13 +33,7 @@ typedef struct
     } value;
 } Setting;
 
-typedef struct
-{
-    Setting *settings;
-    int count;
-} Settings;
-
-#define CONSTANT_SETTINGS 2
+typedef Setting *Settings;
 
 typedef enum
 {
@@ -63,15 +57,18 @@ typedef enum
     CONFIRM_CHANGES_KEY,
     HIGHLIGHT_UP_KEY,
     HIGHLIGHT_DOWN_KEY,
-    SETTINGS_COUNT,
+    SETTINGS_TOTAL_COUNT,
 } SettingIndexes;
+
+#define CONSTANT_SETTINGS 2
+#define SETTINGS_COUNT (SETTINGS_TOTAL_COUNT - CONSTANT_SETTINGS)
 
 Setting createBooleanSetting(const char *name, bool value);
 Setting createColourSetting(const char *name, ColourTheme value);
 void init_settings(Settings *settings);
 void free_settings(Settings *settings);
 
-#define GET_SETTING(I) (settings->settings[I])
+#define GET_SETTING(I) ((*settings)[I])
 #define GET_SETTING_VALUE(I) (GET_SETTING(I).value)
-#define GET_SHORTCUT(S) (GET_SETTING_VALUE(S).charValue)
+#define GET_SHORTCUT(I) (GET_SETTING_VALUE(I).charValue)
 #endif

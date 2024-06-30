@@ -28,7 +28,7 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
     if (DEBUG_MODE == 1)
     {
         attron(A_DIM);
-        col1 = GET_COLOUR(settings, YELLOW);
+        col1 = GET_COLOUR(YELLOW);
         attron(col1);
         mvprintw(j++, 0, "Debug: %s", debug);
         attroff(col1);
@@ -42,15 +42,15 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
     {
     case NAVIGATE:
         strcpy(status_string, "[Navigation mode]");
-        col1 = GET_COLOUR(settings, CYAN);
+        col1 = GET_COLOUR(CYAN);
         break;
     case EDIT:
         strcpy(status_string, "[Edit mode]");
-        col1 = GET_COLOUR(settings, BLUE);
+        col1 = GET_COLOUR(BLUE);
         break;
     case WRITE:
         strcpy(status_string, "[Write mode]");
-        col1 = GET_COLOUR(settings, MAGENTA);
+        col1 = GET_COLOUR(MAGENTA);
         break;
     default:
         break;
@@ -63,7 +63,7 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
 
     if (message_string_length > 0)
     {
-        col1 = GET_COLOUR(settings, GREEN);
+        col1 = GET_COLOUR(GREEN);
         attron(col1);
         mvprintw(j + 1, 0, "%s", message_string);
         attroff(col1);
@@ -81,9 +81,9 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
     int u = 0;
     int y = 0;
 
-    col1 = GET_COLOUR(settings, CYAN);
-    col2 = GET_COLOUR(settings, CYAN);
-    col3 = GET_COLOUR(settings, YELLOW);
+    col1 = GET_COLOUR(CYAN);
+    col2 = GET_COLOUR(CYAN);
+    col3 = GET_COLOUR(YELLOW);
 
     for (int i = (*start); i < folder_count; i++)
     {

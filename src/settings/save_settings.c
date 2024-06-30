@@ -20,10 +20,10 @@ void save_settings(Settings *settings)
     if (file == NULL)
         return;
 
-    fwrite(&settings->count, sizeof(int), 1, file);
-    for (int i = 0; i < settings->count - CONSTANT_SETTINGS; i++)
+    fwrite(SETTINGS_COUNT, sizeof(int), 1, file);
+    for (int i = 0; i < SETTINGS_COUNT; i++)
     {
-        Setting *setting = &settings->settings[i];
+        Setting *setting = &GET_SETTING(i);
         int nameLen = strlen(setting->name) + 1;
         fwrite(&nameLen, sizeof(int), 1, file);
         fwrite(setting->name, sizeof(char), nameLen, file);
@@ -56,12 +56,12 @@ void load_settings(Settings *settings)
     if (file == NULL)
         return;
 
-    fread(&settings->count, sizeof(int), 1, file);
-    settings->settings = (Setting *)malloc(settings->count * sizeof(Setting));
+    fread(SETTINGS_COUNT, sizeof(int), 1, file);
+    *settings = (Settings)malloc(SETTINGS_COUNT * sizeof(Setting));
 
-    for (int i = 0; i < settings->count; i++)
+    for (int i = 0; i < SETTINGS_COUNT; i++)
     {
-        Setting *setting = &settings->settings[i];
+        Setting *setting = &GET_SETTING(i);
 
         int nameLen;
         fread(&nameLen, sizeof(int), 1, file);

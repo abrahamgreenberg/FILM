@@ -27,7 +27,7 @@ void settings_draw_ui(Settings *settings, int highlight)
     clear();
 
     int j = 0;
-    int c = GET_COLOUR(settings, YELLOW);
+    int c = GET_COLOUR(YELLOW);
     attron(c);
     mvprintw(j++, 0, "[Settings]");
     attroff(c);
@@ -38,7 +38,7 @@ void settings_draw_ui(Settings *settings, int highlight)
 
     const char *ColourNames[] = {"Default", "Dracula", "Ayu Mirage"};
 
-    for (int i = 0; i < (settings->count - CONSTANT_SETTINGS) * 2; i += 2)
+    for (int i = 0; i < SETTINGS_COUNT * 2; i += 2)
     {
         mvprintw(j + i, 0, "%s", GET_SETTING(i / 2).name);
 
@@ -48,7 +48,7 @@ void settings_draw_ui(Settings *settings, int highlight)
         {
         case BOOLEAN:
             bool b = GET_SETTING_VALUE(i / 2).boolValue;
-            c = GET_COLOUR(settings, b ? MAGENTA : GREEN);
+            c = GET_COLOUR(b ? MAGENTA : GREEN);
 
             strcpy(string_value, b ? "[*]" : "[ ]");
             break;
@@ -76,8 +76,6 @@ void settings_draw_ui(Settings *settings, int highlight)
 
 void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, bool *, Settings *))
 {
-    // if (*highlight < 0)
-    //     *highlight = 0;
     settings_draw_ui(settings, *highlight);
 
     int ch = getch();

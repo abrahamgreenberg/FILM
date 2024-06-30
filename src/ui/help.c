@@ -15,7 +15,7 @@ const int shortcutModeMappings[][9] = {
 
 void renderShortcutMappings(View view, int *j, Settings *settings)
 {
-    int c = GET_COLOUR(settings, YELLOW);
+    int c = GET_COLOUR(YELLOW);
     char k[32];
     char d[STRING_LENGTH];
 
@@ -50,12 +50,12 @@ void help_draw_ui(Settings *settings, View view)
     clear();
 
     int j = 0;
-    int c = GET_COLOUR(settings, CYAN);
+    int c = GET_COLOUR(CYAN);
     attron(c);
     mvprintw(j++, 0, "[Help]");
     attroff(c);
 
-    c = GET_COLOUR(settings, BLUE);
+    c = GET_COLOUR(BLUE);
     attron(c);
     switch (view)
     {

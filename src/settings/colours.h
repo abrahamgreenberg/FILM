@@ -23,6 +23,6 @@ typedef enum
 void init_custom_color(short color_number, int hex_value);
 void init_colours();
 
-#define GET_COLOUR(S, C) (COLOR_PAIR(COLOUR_INDEX(S->settings[COLOUR_THEME].value.colourValue, C)))
+#define GET_COLOUR(C) (COLOR_PAIR(COLOUR_INDEX(GET_SETTING_VALUE(COLOUR_THEME).colourValue, C)))
 
 #endif
