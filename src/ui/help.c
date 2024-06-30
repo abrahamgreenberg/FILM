@@ -94,6 +94,6 @@ void help_menu_draw_loop(NAVIGATION_PARAMS(View *, int *, bool *, Settings *))
 
     if (ch == GET_SHORTCUT(EXIT_KEY))
     {
-        navigate(CALL_NAVIGATE_PARAMS, *view);
+        NAVIGATE_TO(*view);
     }
 }

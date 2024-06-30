@@ -164,7 +164,7 @@ void file_manager_draw_loop(
     }
 
     if (ch == GET_SHORTCUT(OPEN_HELP_KEY))
-        navigate(CALL_NAVIGATE_PARAMS, HELP);
+        NAVIGATE_TO(HELP);
 
     switch (*view)
     {
