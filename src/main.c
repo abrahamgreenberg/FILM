@@ -17,8 +17,9 @@
 
 /*
 
+TODO: REMOVE SETTINGS->COUNT AND USE SETTINGS_COUNT
+TODO: MAKE SETTINGS UI LOOK MORE LIKE HELP UI (I PREFER THE LOOK OF IT)
 TODO: ADD "CHANGE SETTING" BUTTON
-BUGFIX: ADD -, = AND ENTER AS KEYBOARD SHORTCUTS
 BUGFIX: ESCAPE HAS TO BE PRESSED TWICE
 BUGFIX: IF A NEW SETTING IS ADDED, CURRENLTY THEY ARE ALL OVERRIDDEN
 TODO: MAKE navigate(CALL_NAVIGATE_PARAMS, WRITE); A MACRO INSTEAD OF CALL_NAVIGATE_PARAMS
@@ -106,8 +107,8 @@ int main(int argc, char *argv[])
 
     if (DEBUG_MODE)
     {
-        view = WRITE;
-        navigate(&view, &highlight, &help, HELP);
+        // view = WRITE;
+        navigate(&view, &highlight, &help, SETTINGS);
         highlight = 0;
     }
 

@@ -13,6 +13,7 @@ void setting_string(Settings *settings, int i, char *s)
         RENDER_KEY(27, "Escape")
         RENDER_KEY(32, "Space")
         RENDER_KEY(9, "Tab")
+        RENDER_KEY(10, "Enter")
     default:
         str[0] = v;
         str[1] = '\0';
@@ -37,7 +38,7 @@ void settings_draw_ui(Settings *settings, int highlight)
 
     const char *ColourNames[] = {"Default", "Dracula", "Ayu Mirage"};
 
-    for (int i = 0; i < settings->count * 2; i += 2)
+    for (int i = 0; i < (settings->count - CONSTANT_SETTINGS) * 2; i += 2)
     {
         mvprintw(j + i, 0, "%s", GET_SETTING(i / 2).name);
 

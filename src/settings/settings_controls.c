@@ -42,7 +42,9 @@ void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings
                 c = getch();
                 if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
                     valid = true;
-                else if (c == 27 || c == 32 || c == 9)
+                else if (c == 27 || c == 32 || c == 9 || c == 10)
+                    valid = true;
+                else if (c == '-' || c == '=')
                     valid = true;
                 if (c >= 'A' && c <= 'Z')
                     c += ('a' - 'A');
