@@ -97,9 +97,6 @@ int main(int argc, char *argv[])
 
     if (DEBUG_MODE)
     {
-        // view = WRITE;
-        navigate(&view, &highlight, &help, SETTINGS);
-        highlight = 0;
     }
 
     bkgd(COLOR_PAIR(COLOUR_INDEX((settings[COLOUR_THEME]).value.colourValue, BACKGROUND)));
