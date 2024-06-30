@@ -38,35 +38,35 @@ void settings_draw_ui(Settings *settings, int highlight)
 
     const char *ColourNames[] = {"Default", "Dracula", "Ayu Mirage"};
 
-    for (int i = 0; i < SETTINGS_COUNT * 2; i += 2)
+    for (int i = 0; i < SETTINGS_COUNT; i++)
     {
-        mvprintw(j + i, 0, "%s", GET_SETTING(i / 2).name);
+        mvprintw(j + i, 0, "%s", GET_SETTING(i).name);
 
-        h = highlight == i >> 1;
+        h = highlight == i;
         c = 0;
-        switch (GET_SETTING(i / 2).type)
+        switch (GET_SETTING(i).type)
         {
         case BOOLEAN:
-            bool b = GET_SETTING_VALUE(i / 2).boolValue;
+            bool b = GET_SETTING_VALUE(i).boolValue;
             c = GET_COLOUR(b ? MAGENTA : GREEN);
 
             strcpy(string_value, b ? "[*]" : "[ ]");
             break;
         case COLOUR:
+            c = GET_COLOUR(BLUE);
             strcpy(string_value,
-                   ColourNames[GET_SETTING_VALUE(i / 2).colourValue]);
+                   ColourNames[GET_SETTING_VALUE(i).colourValue]);
             break;
         case SHORTCUT:
-            setting_string(settings, i / 2, string_value);
+            c = GET_COLOUR(CYAN);
+            setting_string(settings, i, string_value);
         }
 
         if (h)
             attron(A_STANDOUT);
-        if (c != 0)
-            attron(c);
-        mvprintw(j + i + 1, 30, "%s", string_value);
-        if (c != 0)
-            attroff(c);
+        attron(c);
+        mvprintw(j + i, 30, "%s", string_value);
+        attroff(c);
         if (h)
             attroff(A_STANDOUT);
     }
