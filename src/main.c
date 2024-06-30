@@ -16,9 +16,6 @@
 #include "settings/save_settings.h"
 
 /*
-GDB TIPS:
-https://chatgpt.com/share/abeb7c58-cd10-4eda-91a8-9263bf9ceab5
-BUGFIX: IF A NEW SETTING IS ADDED, CURRENLTY THEY ARE ALL OVERRIDDEN - IMPLEMENT INIT SETTINSGS IN LOAD_SETTINGS.C
 TODO: WHEN UPDATING A SETTING IN THE FILE MAYBE SIMPLY UPDATE THAT INTSTEAD OF THE ENTIRE SETTINGS CONFIG
 TODO: MAKE navigate(CALL_NAVIGATE_PARAMS, WRITE); A MACRO INSTEAD OF CALL_NAVIGATE_PARAMS
 
@@ -57,10 +54,7 @@ int main(int argc, char *argv[])
     }
 
     Settings settings;
-    // load_settings(&settings);
-    // FIXME:
-    // if (settings.count != SETTINGS_COUNT)
-    init_settings(&settings);
+    load_settings(&settings);
 
     start_color();
     use_default_colors();
