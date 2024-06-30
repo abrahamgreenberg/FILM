@@ -4,10 +4,9 @@
 void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings *))
 {
     if (ch == GET_SHORTCUT(EXIT_KEY))
-    {
-        *highlight = -1;
-        *view = NAVIGATE;
-    }
+        navigate(CALL_NAVIGATE_PARAMS, NAVIGATE);
+    else if (ch == GET_SHORTCUT(OPEN_HELP_KEY))
+        navigate(CALL_NAVIGATE_PARAMS, HELP);
     switch (ch)
     {
     case KEY_UP:

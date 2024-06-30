@@ -7,4 +7,6 @@
 #include "colours.h"
 
 void settings_draw_loop(NAVIGATION_PARAMS(View *, int *, bool *, Settings *));
+void setting_string(Settings *settings, int i, char *s);
+
 #endif

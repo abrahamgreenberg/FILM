@@ -5,6 +5,22 @@
         strcpy(str, S);  \
         break;
 
+void setting_string(Settings *settings, int i, char *s)
+{
+    char str[8], v;
+    switch (v = GET_SETTING_VALUE(i).charValue)
+    {
+        RENDER_KEY(27, "Escape")
+        RENDER_KEY(32, "Space")
+        RENDER_KEY(9, "Tab")
+    default:
+        str[0] = v;
+        str[1] = '\0';
+        break;
+    }
+    strcpy(s, str);
+}
+
 void settings_draw_ui(Settings *settings, int highlight)
 {
     clear();
@@ -40,18 +56,7 @@ void settings_draw_ui(Settings *settings, int highlight)
                    ColourNames[GET_SETTING_VALUE(i / 2).colourValue]);
             break;
         case SHORTCUT:
-            char str[8], v;
-            switch (v = GET_SETTING_VALUE(i / 2).charValue)
-            {
-                RENDER_KEY(27, "Escape")
-                RENDER_KEY(32, "Space")
-                RENDER_KEY(9, "Tab")
-            default:
-                str[0] = v;
-                str[1] = '\0';
-                break;
-            }
-            strcpy(string_value, str);
+            setting_string(settings, i / 2, string_value);
         }
 
         if (h)

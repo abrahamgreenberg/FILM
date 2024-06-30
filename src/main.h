@@ -8,7 +8,8 @@ typedef enum
     EDIT,
     WRITE,
     SETTINGS,
-    HELP
+    HELP,
+    VIEW_COUNT
 } View;
 
 #define NAVIGATION_PARAMS(VIEW_PRE, HL_PRE, HELP_PRE, SETTINGS_PRE) VIEW_PRE view, HL_PRE highlight, HELP_PRE help, SETTINGS_PRE settings

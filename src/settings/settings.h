@@ -59,7 +59,9 @@ typedef enum
     INCREMENT_DIR_NUMBER_KEY,
     FIX_DIR_NUMBERS_KEY,
     CONFIRM_CHANGES_KEY,
-    SETTINGS_COUNT
+    HIGHLIGHT_UP_KEY,
+    HIGHLIGHT_DOWN_KEY,
+    SETTINGS_COUNT,
 } SettingIndexes;
 
 Setting createBooleanSetting(const char *name, bool value);

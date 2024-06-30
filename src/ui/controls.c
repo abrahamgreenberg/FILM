@@ -87,17 +87,11 @@ void navigate_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings
     else if (SHRT(RELOAD_DIRS_KEY))
         render_path[0] = '\0';
     else if (SHRT(OPEN_EDIT_MODE_KEY))
-        *view = EDIT;
+        navigate(CALL_NAVIGATE_PARAMS, EDIT);
     else if (SHRT(OPEN_SETTINGS_KEY))
-    {
-        *highlight = 0;
-        *view = SETTINGS;
-    }
+        navigate(CALL_NAVIGATE_PARAMS, SETTINGS);
     else if (SHRT(OPEN_HELP_KEY))
-    {
-        *highlight = 0;
-        *view = HELP;
-    }
+        navigate(CALL_NAVIGATE_PARAMS, HELP);
     else if (SHRT(EXIT_KEY))
     {
         endwin();
@@ -115,10 +109,10 @@ void edit_controls(int ch, FOLDER_PARAMS(Diff **, Folder *, int *), NAVIGATION_P
             UpdateDiffName(diffs, highlight, diff->number, new_name);
     }
     else if (SHRT(OPEN_WRITE_MODE_KEY))
-        *view = WRITE;
+        navigate(CALL_NAVIGATE_PARAMS, WRITE);
     else if (SHRT(EXIT_KEY))
     {
-        *view = NAVIGATE;
+        navigate(CALL_NAVIGATE_PARAMS, NAVIGATE);
         if (*diffs != NULL)
             free(*diffs);
         DiffArrayConstructor(diffs, folders, *folder_count);
@@ -245,10 +239,10 @@ void edit_controls(int ch, FOLDER_PARAMS(Diff **, Folder *, int *), NAVIGATION_P
 void write_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings *), FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int *), PATH_PARAMS(char *))
 {
     if (SHRT(EXIT_KEY))
-        *view = EDIT;
+        navigate(CALL_NAVIGATE_PARAMS, EDIT);
     else if (SHRT(CONFIRM_CHANGES_KEY))
     {
-        *view = NAVIGATE;
+        navigate(CALL_NAVIGATE_PARAMS, NAVIGATE);
         write_changes(current_path, folders, diffs, folder_count, message_string, message_string_length, settings);
         render_path[0] = '\0';
         *highlight = -1;

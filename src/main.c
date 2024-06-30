@@ -17,15 +17,20 @@
 
 /*
 
-TODO: CURRENTLY HELP MENU DOESNT USE SHORTCUTS I WANT TO FIX THIS AND THE HELP UI IN GENERAL (MAYBE A HELP VIEW)
-TODO: HELP SHOULD BE A BOOLEAN, NOT A VIEW SO IT CAN BE ACTIVATED ANYWHERE
+TODO: FINISH HELP MENU
+    - PROPERLY RENDER CHARACTERS SUCH AS "ENTER" OR "SPACE" BY MAKING A FUNCTION TO DO SO
+    - ADD THE MODE SPECIFIC SHORTCUTS
+FIXME: SETTINGS CURRENLTY CAUSES A SEGFAULT (COULD BE AN ISSUE WITH THE PARAMS)
+TODO: ADD "CHANGE SETTING" BUTTON
 BUGFIX: ADD -, = AND ENTER AS KEYBOARD SHORTCUTS
 BUGFIX: ESCAPE HAS TO BE PRESSED TWICE
+BUGFIX: IF A NEW SETTING IS ADDED, CURRENLTY THEY ARE ALL OVERRIDDEN
+TODO: MAKE navigate(CALL_NAVIGATE_PARAMS, WRITE); A MACRO INSTEAD OF CALL_NAVIGATE_PARAMS
+
 TODO: IMPROVE SETTINGS UI
 TODO: ABILITY TO BRING IN FOLDERS THAT DON'T FOLLOW THE SYSTEM?
-BUGFIX: IF A NEW SETTING IS ADDED, CURRENLTY THEY ARE ALL OVERRIDDEN, NEED TO FIX THIS BEHAVIOUR
 
- */
+*/
 
 void navigate(View *view, int *highlight, bool *help, View navigateTo)
 {
@@ -34,9 +39,7 @@ void navigate(View *view, int *highlight, bool *help, View navigateTo)
     else if (navigateTo == NAVIGATE)
         *highlight = -1;
 
-    if (*help)
-        *help = false;
-    else if (navigateTo == HELP)
+    if (navigateTo == HELP)
         *help = true;
     else
     {
@@ -107,6 +110,7 @@ int main(int argc, char *argv[])
 
     if (DEBUG_MODE)
     {
+        view = EDIT;
         navigate(&view, &highlight, &help, HELP);
         highlight = 0;
     }

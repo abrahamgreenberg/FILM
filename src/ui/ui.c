@@ -71,8 +71,6 @@ void draw_ui(FOLDER_PARAMS(Diff *, Folder *, int), MESSAGE_PARAMS(char *, int), 
 
     j += 3;
 
-    // TODO: FIX THE MESSAGE
-
     *start = path_level(current_path) == max_level && !DEBUG_MODE ? 0 : -1;
     if (view != NAVIGATE)
         *start = 0;
@@ -164,6 +162,9 @@ void file_manager_draw_loop(
                 (*highlight)++;
         break;
     }
+
+    if (ch == GET_SHORTCUT(OPEN_HELP_KEY))
+        navigate(CALL_NAVIGATE_PARAMS, HELP);
 
     switch (*view)
     {
