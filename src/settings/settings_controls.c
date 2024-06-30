@@ -30,7 +30,6 @@ void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings
         else if (GET_SETTING(*highlight).type == COLOUR)
         {
             GET_SETTING_VALUE(*highlight).colourValue = (GET_SETTING_VALUE(*highlight).colourValue + 1) % COLOUR_AMOUNT;
-            // GET_SETTING_VALUE(COLOUR_THEME)
             bkgd(GET_COLOUR(BACKGROUND));
         }
         else if (GET_SETTING(*highlight).type == SHORTCUT)
