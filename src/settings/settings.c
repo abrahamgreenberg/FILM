@@ -51,7 +51,7 @@ void init_settings(Settings *settings)
     GET_SETTING(CREATE_ARCHIVE) = createBooleanSetting("Create archive", false);
     GET_SETTING(COLOUR_THEME) = createColourSetting("Colour Theme", DEFAULT_THEME);
     GET_SETTING(EXIT_KEY) = createShortcutSetting("Exit key", 'q');
-    GET_SETTING(NAVIGATE_KEY) = createShortcutSetting("Navigate", 32);
+    GET_SETTING(NAVIGATE_KEY) = createShortcutSetting("Navigate", 10);
     GET_SETTING(RELOAD_DIRS_KEY) = createShortcutSetting("Reload folders", 'r');
     GET_SETTING(OPEN_EDIT_MODE_KEY) = createShortcutSetting("Edit mode", 'e');
     GET_SETTING(OPEN_WRITE_MODE_KEY) = createShortcutSetting("Write mode", 'w');
@@ -66,6 +66,7 @@ void init_settings(Settings *settings)
     GET_SETTING(INCREMENT_DIR_NUMBER_KEY) = createShortcutSetting("Increment folder number", '=');
     GET_SETTING(FIX_DIR_NUMBERS_KEY) = createShortcutSetting("Fix folder numbers", 'f');
     GET_SETTING(CONFIRM_CHANGES_KEY) = createShortcutSetting("Confirm changes", 'c');
+    GET_SETTING(CHANGE_SETTING_KEY) = createShortcutSetting("Change setting", 32);
 }
 
 void free_settings(Settings *settings)

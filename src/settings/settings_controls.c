@@ -21,7 +21,10 @@ void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings
         if (*highlight < SETTINGS_COUNT - 1)
             (*highlight)++;
         break;
-    case ' ':
+    }
+
+    if (ch == GET_SHORTCUT(CHANGE_SETTING_KEY))
+    {
         if (GET_SETTING(*highlight).type == BOOLEAN)
             GET_SETTING_VALUE(*highlight).boolValue = !GET_SETTING_VALUE(*highlight).boolValue;
         else if (GET_SETTING(*highlight).type == COLOUR)
@@ -53,6 +56,5 @@ void settings_controls(int ch, NAVIGATION_PARAMS(View *, int *, bool *, Settings
             GET_SETTING_VALUE(*highlight).charValue = c;
         }
         save_settings(settings);
-        break;
     }
 }
