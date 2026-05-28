@@ -2,7 +2,7 @@
 
 void settings_dir_path(char *str)
 {
-    sprintf(str, "%s/.my_file_manager", getenv("HOME"));
+    sprintf(str, "%s/.film", getenv("HOME"));
 }
 
 void settings_path(char *str)
