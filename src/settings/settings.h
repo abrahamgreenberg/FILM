@@ -12,8 +12,9 @@ typedef enum
     DEFAULT_THEME,
     DRACULA_THEME,
     AYU_MIRAGE_THEME,
-    COLOUR_AMOUNT
+    COLOUR_COUNT
 } ColourTheme;
+
 typedef enum
 {
     BOOLEAN,
@@ -58,11 +59,11 @@ typedef enum
     CHANGE_SETTING_KEY,
     HIGHLIGHT_UP_KEY,
     HIGHLIGHT_DOWN_KEY,
-    SETTINGS_TOTAL_COUNT,
+    TOTAL_SETTINGS_COUNT,
 } SettingIndexes;
 
-#define CONSTANT_SETTINGS 2
-#define SETTINGS_COUNT (SETTINGS_TOTAL_COUNT - CONSTANT_SETTINGS)
+#define BASE_SETTINGS_COUNT 2
+#define SETTINGS_COUNT (TOTAL_SETTINGS_COUNT - BASE_SETTINGS_COUNT)
 
 Setting createBooleanSetting(const char *name, bool value);
 Setting createColourSetting(const char *name, ColourTheme value);
