@@ -7,6 +7,7 @@ LDFLAGS = -lncurses
 SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
+INSTALL_DIR ?= $(HOME)/bin
 
 # Source files
 UI_SRCS = $(wildcard $(SRC_DIR)/ui/*.c)
@@ -21,7 +22,7 @@ SETTINGS_OBJS = $(patsubst $(SRC_DIR)/settings/%.c,$(OBJ_DIR)/settings/%.o,$(SET
 MAIN_OBJ = $(OBJ_DIR)/main.o
 
 # Targets
-TARGET = file_manager
+TARGET = film
 
 # # Build types
 DEBUG_CFLAGS = -g -DDEBUG_MODE=1
@@ -39,6 +40,11 @@ debug: $(BIN_DIR)/$(TARGET)_debug
 release: clean $(BIN_DIR)/$(TARGET)
 release: CFLAGS += $(RELEASE_CFLAGS)
 release: $(BIN_DIR)/$(TARGET)
+
+# Install release build to the user's home directory
+install: release
+	@mkdir -p $(INSTALL_DIR)
+	install -m 755 $(BIN_DIR)/$(TARGET) $(INSTALL_DIR)/$(TARGET)
 
 # Linking the executable (debug version)
 $(BIN_DIR)/$(TARGET)_debug: $(UI_OBJS) $(BACKEND_OBJS) $(SETTINGS_OBJS) $(MAIN_OBJ)
@@ -75,4 +81,4 @@ clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
 # Phony targets
-.PHONY: all debug release clean
+.PHONY: all debug release install clean
