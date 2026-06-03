@@ -2,8 +2,12 @@
 
 FILM is a terminal-based file manager built with C and ncurses. It organizes directories using a strict priority-based naming system and provides a safe, staged-edit workflow, themes, and keyboard-driven navigation for efficient management of large folder structures.
 
-![Example of file structure in FILM](assets/README/Kooha-2026-05-28-15-58-36.gif)
-*Example of the file structure in FILM*
+<p align="center">
+  <img src="assets/README/Kooha-2026-05-28-15-58-36.gif" alt="Example of the file structure in FILM" width="500">
+</p>
+
+<p align="center"><em>Example of the file structure in FILM</em></p>
+
 
 ## Highlights
 
@@ -42,13 +46,13 @@ This project helped me develop a fundamental understanding of Linux file systems
 ### File Explorer
 
 <p align="center">
-  <img src="assets/README/Kooha-2026-05-28-15-58-36.gif" alt="Navigating with FLIM" width="700">
+  <img src="assets/README/Kooha-2026-05-28-15-58-36.gif" alt="Navigating with FLIM" width="500">
 </p>
 
 <p align="center"><em>Navigating with FLIM</em></p>
 
 <p align="center">
-  <img src="assets/README/image.png" alt="Help menu in explorer mode" width="700">
+  <img src="assets/README/image.png" alt="Help menu in explorer mode" width="500">
 </p>
 
 <p align="center"><em>The help menu in explorer mode</em></p>
@@ -56,13 +60,13 @@ This project helped me develop a fundamental understanding of Linux file systems
 ### Edit Mode
 
 <p align="center">
-  <img src="assets/README/Kooha-2026-06-02-14-15-18.gif" alt="Changing the order of folders in edit mode" width="700">
+  <img src="assets/README/Kooha-2026-06-02-14-15-18.gif" alt="Changing the order of folders in edit mode" width="500">
 </p>
 
 <p align="center"><em>Changing the order of folders in edit mode</em></p>
 
 <p align="center">
-  <img src="assets/README/Kooha-2026-06-02-14-23-56.gif" alt="Creating a folder in edit mode" width="700">
+  <img src="assets/README/Kooha-2026-06-02-14-23-56.gif" alt="Creating a folder in edit mode" width="500">
 </p>
 
 <p align="center"><em>Creating a folder in edit mode</em></p>
@@ -70,7 +74,7 @@ This project helped me develop a fundamental understanding of Linux file systems
 ### Write Mode
 
 <p align="center">
-  <img src="assets/README/image-1.png" alt="A diff in write mode" width="700">
+  <img src="assets/README/image-1.png" alt="A diff in write mode" width="500">
 </p>
 
 <p align="center"><em>A diff shown in write mode</em></p>
