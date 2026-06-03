@@ -51,11 +51,6 @@ This project helped me develop a fundamental understanding of Linux file systems
 
 <p align="center"><em>Navigating with FLIM</em></p>
 
-<p align="center">
-  <img src="assets/README/image.png" alt="Help menu in explorer mode" width="500">
-</p>
-
-<p align="center"><em>The help menu in explorer mode</em></p>
 
 ### Edit Mode
 
