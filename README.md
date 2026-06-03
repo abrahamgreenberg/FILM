@@ -40,22 +40,40 @@ This project helped me develop a fundamental understanding of Linux file systems
 ## Screenshots
 
 ### File Explorer
-![Navigating with FLIM](assets/README/Kooha-2026-05-28-15-58-36.gif)
-*Navigating with Film*
 
-![Help menu in explorer mode](assets/README/image.png)
-*The help menu in explorer mode*
+<p align="center">
+  <img src="assets/README/Kooha-2026-05-28-15-58-36.gif" alt="Navigating with FLIM" width="700">
+</p>
+
+<p align="center"><em>Navigating with FLIM</em></p>
+
+<p align="center">
+  <img src="assets/README/image.png" alt="Help menu in explorer mode" width="700">
+</p>
+
+<p align="center"><em>The help menu in explorer mode</em></p>
 
 ### Edit Mode
-![Changing the order of folders in edit mode](assets/README/Kooha-2026-06-02-14-15-18.gif)
-*Changing the order of folders in edit mode*
 
-![Creating a folder in edit mode](assets/README/Kooha-2026-06-02-14-23-56.gif)
-*Creating a folder in eit mode*
+<p align="center">
+  <img src="assets/README/Kooha-2026-06-02-14-15-18.gif" alt="Changing the order of folders in edit mode" width="700">
+</p>
+
+<p align="center"><em>Changing the order of folders in edit mode</em></p>
+
+<p align="center">
+  <img src="assets/README/Kooha-2026-06-02-14-23-56.gif" alt="Creating a folder in edit mode" width="700">
+</p>
+
+<p align="center"><em>Creating a folder in edit mode</em></p>
 
 ### Write Mode
-![A diff in write mode](assets/README/image-1.png)
-*A diff shown in write mode*
+
+<p align="center">
+  <img src="assets/README/image-1.png" alt="A diff in write mode" width="700">
+</p>
+
+<p align="center"><em>A diff shown in write mode</em></p>
 
 ## Architecture / Design
 
